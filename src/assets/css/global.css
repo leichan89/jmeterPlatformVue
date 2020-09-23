@@ -1,0 +1,37 @@
+/* 全局样式表 */
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* 修改Users.vue的卡片整体与面包屑的高度 */
+/* 类名选择器，重写<el-breadcrumb separator-class="el-icon-arrow-right" */
+.el-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+/* 修改Users.vue的卡片的样式 */
+.el-card {
+    /* 默认情况下卡片的样式权重比较高，自己添加的样式要覆盖原有样式就需要加!important去覆盖 */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+
+.el-table {
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.el-pagination {
+    margin-top: 15px;
+}
+
+.el-select {
+    width: 100px;
+  }
+.input-with-select .el-input-group__prepend {
+background-color: #fff;
+}
