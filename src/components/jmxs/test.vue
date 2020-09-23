@@ -50,7 +50,8 @@ export default {
       } else if (tab === 'json类型') {
         this.tabView = 'rawParamInput'
       }
-      console.log(this.tabView)
+      // 调用其他模板中的数据
+      console.log(formParamInput.formParamFormData.list)
     },
     handleClose(done) {
       this.$confirm('确认关闭？')

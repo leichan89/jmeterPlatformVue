@@ -14,7 +14,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="1">
-          <i class="iconBtn" @click="headerListMethod(index)" :class="{'el-icon-circle-plus-outline': index == 0,'el-icon-remove-outline': index>0}"></i>
+          <i class="iconBtn" @click="paramListMethod(index)" :class="{'el-icon-circle-plus-outline': index == 0,'el-icon-remove-outline': index>0}"></i>
         </el-col>
       </el-row>
     </el-form-item>
@@ -40,14 +40,14 @@ export default {
   mounted() {},
   methods: {
     // 表单增减操作
-    headerListMethod(n) {
+    paramListMethod(n) {
       if (n > 0) {
-        this.headerFormData.list.splice(n, 1)
+        this.formParamFormData.list.splice(n, 1)
       } else {
         const o = { key: '', value: '' }
-        this.headerFormData.list.push(o)
+        this.formParamFormData.list.push(o)
       }
-      console.log(this.headerFormData.list)
+      console.log(this.formParamFormData.list)
     },
     // 姓名校验方法
     rule_name(rule, value, callback) {
