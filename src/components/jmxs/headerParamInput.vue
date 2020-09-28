@@ -1,8 +1,8 @@
 <template>
-  <el-form :model="formParamFormData" ref="formParamFormData" status-icon style="width:100%" size="small">
+  <el-form :model="headerParamFormData" ref="headerParamFormData" status-icon style="width:100%" size="small">
     <!-- 参数输入 -->
     <el-form-item>
-      <el-row :gutter="10" v-for="(item,index) in formParamFormData.list" :key="index" class="alignT">
+      <el-row :gutter="10" v-for="(item,index) in headerParamFormData.list" :key="index" class="alignT">
         <el-col>
           <el-form-item :prop="'list[' + index + '].key'">
             <el-input placeholder="请输入key" v-model="item.key" auto-complete="off"></el-input>
@@ -28,9 +28,9 @@ export default {
   name: 'elementForm' /* element-ui表单验证 */,
   data() {
     return {
-      formParamFormData: {
+      headerParamFormData: {
         list: [
-          { key: '', value: '' }
+          { key: 'Content-Type', value: 'application/json;charset=UTF-8' }
         ]
       }
     }
@@ -40,10 +40,10 @@ export default {
     // 表单增减操作
     paramListMethod(n) {
       if (n > 0) {
-        this.formParamFormData.list.splice(n, 1)
+        this.headerParamFormData.list.splice(n, 1)
       } else {
         const o = { key: '', value: '' }
-        this.formParamFormData.list.push(o)
+        this.headerParamFormData.list.push(o)
       }
     },
     // 姓名校验方法
@@ -81,7 +81,6 @@ export default {
 .alignT {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1px;
 }
 .iconBtn {
   color: #409eff;
