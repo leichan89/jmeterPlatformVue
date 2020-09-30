@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- button前面要用div包起来，不然会报错 -->
-    <el-button type="primary" @click="createJmxDialogVisible = true">新建</el-button>
+    <el-button type="primary" @click="initForm">新建</el-button>
     <el-dialog title="创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
       <el-form ref="form" :model="createJmxForm" label-width="80px">
         <el-form-item label="JMX名称">
@@ -73,8 +73,7 @@ export default {
       headerInfo: {
         sapmlerId: '',
         params: []
-      },
-      paramInfo: ''
+      }
     }
   },
   components: {
@@ -83,6 +82,22 @@ export default {
     headerParamInput
   },
   methods: {
+    // 初始化默认参数
+    initForm() {
+      this.createJmxDialogVisible = true
+      this.createJmxForm.jmxName = ''
+      this.createJmxForm.samplerName = ''
+      this.createJmxForm.method = 'GET'
+      this.createJmxForm.url = ''
+      this.createJmxForm.paramType = 'form'
+      this.createJmxForm.params = ''
+      this.createJmxForm.addUser = ''
+      this.headerInfo.sapmlerId = ''
+      this.headerInfo.params = []
+      this.$refs.header.headerParamFormData.list = [{ key: 'Content-Type', value: 'application/json;charset=UTF-8' }]
+      this.$refs.formparam.formParamFormData.list = [{ key: '', value: '' }]
+      this.$refs.rawparam.rawParamFormData.textarea = ''
+    },
     // 再form和raw之间切换
     tabChange(tab) {
       if (tab === 'form类型') {
