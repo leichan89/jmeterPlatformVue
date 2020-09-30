@@ -18,10 +18,10 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" @click="initForm">上传</el-button>
+          <createJmx/>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary">新建</el-button>
+          <uploadJmx/>
         </el-col>
       </el-row>
 
@@ -43,39 +43,11 @@
         </el-table-column>
       </el-table>
 
-      <!-- 上传文件对话框 -->
-      <el-dialog title="上传JMX文件" :visible.sync="uploadFormVisible" width="30%">
-        <el-form :model="uploadForm" label-width="75px" class="demo-ruleForm">
-          <el-form-item label="文件别名:">
-            <el-input v-model="uploadForm.jmx_name"></el-input>
-          </el-form-item>
-          <!-- action必填，不然会告警 -->
-          <el-form-item label="上传文件:">
-            <el-upload
-              class="upload-demo"
-              ref="upload"
-              action=""
-              :file-list="fileList"
-              :with-credentials="true"
-              :limit="5"
-              :auto-upload="false"
-              :http-request="uploadSectionFile"
-            >
-              <el-button size="small" type="primary">点击上传</el-button>
-            </el-upload>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button size="small" @click="cancleForm">取 消</el-button>
-          <el-button size="small" type="primary" @click="submitForm">确 定</el-button>
-        </div>
-      </el-dialog>
-
       <!-- 添加到任务对话框 -->
-      <el-dialog title="添加到任务" :visible.sync="toTaskFormVisible" width="27%">
-        <el-form :model="toTaskForm" label-width="100px">
+      <el-dialog title="添加到任务" :visible.sync="toTaskFormVisible" width="30%">
+        <el-form :model="toTaskForm">
           <el-form-item label="选择任务">
-            <el-select v-model="toTaskForm.task" filterable :filter-method="taskFilter" clearable placeholder="请选择任务">
+            <el-select v-model="toTaskForm.task" filterable :filter-method="taskFilter" clearable placeholder="请输入任务名称" style="width: 80%;">
               <el-option v-for="item in tasksList" :key="item.id" :label="item.task_name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -101,6 +73,10 @@
 </template>
 
 <script>
+
+import createJmx from './createJmx.vue'
+import uploadJmx from './uploadJmx.vue'
+
 export default {
   data() {
     return {
@@ -111,14 +87,6 @@ export default {
       },
       jmxsList: [],
       count: 0,
-      // 上传对话框的可视化参数
-      uploadFormVisible: false,
-      // 上传的jmx文件的别名
-      uploadForm: {
-        jmx_name: ''
-      },
-      // 记录上传文件信息的列表，主要包含文件路径，名称，大小等信息
-      fileList: [],
       // 新建任务的对话框的可视化参数
       toTaskFormVisible: false,
       // 绑定到任务的表单
@@ -131,6 +99,12 @@ export default {
       tasksList: []
     }
   },
+  // 引用的组件
+  components: {
+    createJmx,
+    uploadJmx
+  },
+  // 页面加载前调用
   created() {
     this.getJmxsList()
   },
@@ -158,38 +132,6 @@ export default {
       this.queryInfo.num = newPage
       // 页码发生变化后，重新请求获取数据
       this.getJmxsList()
-    },
-    // 上传对话框初始化操作，需要清除输入框和上传列表数据
-    initForm() {
-      this.uploadFormVisible = true
-      this.uploadForm = {}
-      this.fileList = []
-    },
-    // 上传对话框点击取消时的操作，清除输入框和上传列表数据
-    cancleForm() {
-      this.uploadFormVisible = false
-      this.uploadForm = {}
-      this.fileList = []
-    },
-    // 上传文件，使用form-data上传，需要自己获取到文件流
-    async uploadSectionFile(param) {
-      const fo = param.file
-      const form = new FormData()
-      form.append('jmx', fo)
-      form.append('jmx_name', this.uploadForm.jmx_name)
-      form.append('add_user', window.sessionStorage.getItem('userId'))
-      const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      const { data: res } = await this.$http.post('jmxs/upload', form, config)
-      if (res.code !== 200) {
-        return this.$message.error('上传失败')
-      }
-      // 上传完成后，刷新任务列表
-      this.getJmxsList()
-    },
-    // 上传文件的提交操作，先上传，再关闭对话框
-    submitForm() {
-      this.$refs.upload.submit()
-      this.uploadFormVisible = false
     },
     // 获取任务列表，将搜索结果放到一个list中，便于使用过滤器过滤
     async getTasksList() {

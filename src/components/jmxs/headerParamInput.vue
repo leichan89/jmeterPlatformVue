@@ -35,7 +35,6 @@ export default {
       }
     }
   },
-  mounted() {},
   methods: {
     // 表单增减操作
     paramListMethod(n) {

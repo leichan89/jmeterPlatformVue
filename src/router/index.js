@@ -2,11 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
-// import Welcome from '../components/Welcome.vue'
+import Welcome from '../components/Welcome.vue'
 import Jmxs from '../components/jmxs/Jmxs.vue'
 import Tasks from '../components/tasks/Tasks.vue'
 import Flows from '../components/tasks/Flows.vue'
-import test from '../components/jmxs/test.vue'
 
 Vue.use(VueRouter)
 
@@ -24,7 +23,7 @@ const routes = [
     children: [
       {
         path: '/welcome',
-        component: test
+        component: Welcome
       },
       {
         path: '/jmxs',
