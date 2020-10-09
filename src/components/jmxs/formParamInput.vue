@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="formParamFormData" ref="formParamFormData" status-icon style="width:100%" size="small">
+  <el-form :model="formParamFormData" status-icon style="width:100%" size="small">
     <!-- 参数输入 -->
     <el-form-item>
       <el-row :gutter="10" v-for="(item,index) in formParamFormData.list" :key="index" class="alignT">
@@ -25,7 +25,6 @@
 
 <script>
 export default {
-  name: 'elementForm' /* element-ui表单验证 */,
   data() {
     return {
       formParamFormData: {
@@ -35,7 +34,6 @@ export default {
       }
     }
   },
-  mounted() {},
   methods: {
     // 表单增减操作
     paramListMethod(n) {

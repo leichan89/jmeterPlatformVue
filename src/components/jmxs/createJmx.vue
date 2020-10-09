@@ -3,14 +3,14 @@
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm">新建</el-button>
     <el-dialog title="创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
-      <el-form ref="form" :model="createJmxForm" label-width="80px">
-        <el-form-item label="JMX名称">
-          <el-input v-model="createJmxForm.jmxName" placeholder="请输入接口名称" size="small"></el-input>
+      <el-form ref="createJmxFormRef" :model="createJmxForm" :rules="createJmxFormRules" label-width="80px">
+        <el-form-item label="JMX名称" prop="jmxName">
+          <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="请求名称">
+        <el-form-item label="请求名称" prop="samplerName">
           <el-input v-model="createJmxForm.samplerName" placeholder="请输入接口名称" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="请求地址">
+        <el-form-item label="请求地址" prop="url">
           <div style="margin-bottom: 5px"/>
           <el-input placeholder="请输入接口地址" v-model="createJmxForm.url" size="small">
             <el-select v-model="createJmxForm.method" slot="prepend" placeholder="请选择">
@@ -30,14 +30,17 @@
         </el-form-item>
         <el-form-item label="参数">
           <div style="margin-bottom: 5px">
+            <!-- 切换tab的时候，修改paramType的值，radio的值要和label的值相等 -->
             <el-radio-group v-model="radio" @change="tabChange(radio)" size="small">
               <el-radio-button label="form类型"></el-radio-button>
-              <el-radio-button label="json类型"></el-radio-button>
+              <el-radio-button label="raw类型"></el-radio-button>
             </el-radio-group>
           </div>
           <!--根据选择判断是显示json还是显示raw-->
-          <formParamInput ref="formparam" v-if="tabView==='formParamInput'"/>
-          <rawParamInput ref="rawparam" v-if="tabView==='rawParamInput'"/>
+          <!-- 使用v-show元素总是会被渲染，并且只是简单地基于 CSS 进行切换，所以这里其实form和raw都是现实加载出来了的 -->
+          <!-- 使用v-if则是“真正”的条件渲染，就是为真实html中才有这些元素 -->
+          <formParamInput ref="formparamRef" v-show="createJmxForm.paramType==='form'"/>
+          <rawParamInput ref="rawparamRef" v-show="createJmxForm.paramType==='raw'"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -58,21 +61,32 @@ export default {
     return {
       radio: 'form类型',
       // 默认显示form表单参数
-      tabView: 'formParamInput',
-      headerView: 'headerParamInput',
       createJmxDialogVisible: false,
+      headerInfo: {
+        sapmlerId: '',
+        params: []
+      },
       createJmxForm: {
         jmxName: '',
         samplerName: '',
         method: 'GET',
         url: '',
         paramType: 'form',
+        // 创建sampler时提交的参数，form获取raw
         params: '',
         addUser: ''
       },
-      headerInfo: {
-        sapmlerId: '',
-        params: []
+      // 校验必填参数
+      createJmxFormRules: {
+        jmxName: [
+          { required: true, message: '请输入JMX名称', trigger: 'blur' }
+        ],
+        samplerName: [
+          { required: true, message: '请输入sampler名称', trigger: 'blur' }
+        ],
+        url: [
+          { required: true, message: '请输入URL', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -84,50 +98,61 @@ export default {
   methods: {
     // 初始化默认参数
     initForm() {
+      // 使用setTimeout作用是防止子组件没有初始化完成
+      // 初始化参数输入框信息
+      setTimeout(() => {
+        // 初始化必填参数，必须放这里，不然可能组件没有加载完成就会报错
+        this.$refs.createJmxFormRef.resetFields()
+        // 重置头信息的参数输入框
+        this.$refs.header.headerParamFormData.list = [{ key: 'Content-Type', value: 'application/json;charset=UTF-8' }]
+        // 重置form参数的输入框
+        this.$refs.formparamRef.formParamFormData.list = [{ key: '', value: '' }]
+        // 重置raw参数的输入框
+        this.$refs.rawparamRef.rawParamFormData.textarea = ''
+        this.radio = 'form类型'
+        // 初始化头信息
+        this.headerInfo.sapmlerId = ''
+        this.headerInfo.params = []
+        // 重置默认参数
+        this.createJmxForm.method = 'GET'
+        this.createJmxForm.paramType = 'form'
+        this.createJmxForm.params = ''
+        this.createJmxForm.addUser = ''
+      }, 10)
       this.createJmxDialogVisible = true
-      this.createJmxForm.jmxName = ''
-      this.createJmxForm.samplerName = ''
-      this.createJmxForm.method = 'GET'
-      this.createJmxForm.url = ''
-      this.createJmxForm.paramType = 'form'
-      this.createJmxForm.params = ''
-      this.createJmxForm.addUser = ''
-      this.headerInfo.sapmlerId = ''
-      this.headerInfo.params = []
-      this.$refs.header.headerParamFormData.list = [{ key: 'Content-Type', value: 'application/json;charset=UTF-8' }]
-      this.$refs.formparam.formParamFormData.list = [{ key: '', value: '' }]
-      this.$refs.rawparam.rawParamFormData.textarea = ''
     },
     // 再form和raw之间切换
     tabChange(tab) {
       if (tab === 'form类型') {
-        this.tabView = 'formParamInput'
         this.createJmxForm.paramType = 'form'
-      } else if (tab === 'json类型') {
-        this.tabView = 'rawParamInput'
+      } else if (tab === 'raw类型') {
         this.createJmxForm.paramType = 'raw'
       }
     },
     // 点击确定时，创建jmx，创建完成后再创建jmx的header
-    async submit() {
-      this.createJmxForm.addUser = window.sessionStorage.getItem('userId')
-      if (this.createJmxForm.paramType === 'form') {
-        this.createJmxForm.params = this.$refs.formparam.formParamFormData.list
-      } else if (this.createJmxForm.paramType === 'raw') {
-        this.createJmxForm.params = this.$refs.rawparam.rawParamFormData.textarea
-      }
-      const { data: createJmxRes } = await this.$http.post('jmxs/create', this.createJmxForm)
-      if (createJmxRes.code !== 200) {
-        this.$message.error('创建JMX失败')
-      } else {
-        this.headerInfo.sapmlerId = createJmxRes.data.sapmlerId
-        this.headerInfo.params = this.$refs.header.headerParamFormData.list
-        const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.headerInfo)
-        if (createHeaderRes.code !== 200) {
-          this.$message.error('创建header失败')
+    submit() {
+      this.$refs.createJmxFormRef.validate(async valid => {
+        // 校验填写的参数，如果校验失败，则标红提示
+        if (!valid) return
+        this.createJmxForm.addUser = window.sessionStorage.getItem('userId')
+        if (this.createJmxForm.paramType === 'form') {
+          this.createJmxForm.params = this.$refs.formparamRef.formParamFormData.list
+        } else if (this.createJmxForm.paramType === 'raw') {
+          this.createJmxForm.params = this.$refs.rawparamRef.rawParamFormData.textarea
         }
-      }
-      this.createJmxDialogVisible = false
+        const { data: createJmxRes } = await this.$http.post('jmxs/create', this.createJmxForm)
+        if (createJmxRes.code !== 200) {
+          this.$message.error('创建JMX失败')
+        } else {
+          this.headerInfo.sapmlerId = createJmxRes.data.sapmlerId
+          this.headerInfo.params = this.$refs.header.headerParamFormData.list
+          const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.headerInfo)
+          if (createHeaderRes.code !== 200) {
+            this.$message.error('创建header失败')
+          }
+        }
+        this.createJmxDialogVisible = false
+      })
     }
   }
 }

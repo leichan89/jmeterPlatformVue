@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="headerParamFormData" ref="headerParamFormData" status-icon style="width:100%" size="small">
+  <el-form :model="headerParamFormData" status-icon style="width:100%" size="small">
     <!-- 参数输入 -->
     <el-form-item>
       <el-row :gutter="10" v-for="(item,index) in headerParamFormData.list" :key="index" class="alignT">
@@ -25,7 +25,6 @@
 
 <script>
 export default {
-  name: 'elementForm' /* element-ui表单验证 */,
   data() {
     return {
       headerParamFormData: {
