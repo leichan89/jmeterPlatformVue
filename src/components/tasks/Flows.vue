@@ -35,13 +35,13 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="停止" placement="top" :enterable="false">
-              <el-button type="danger" icon="el-icon-close" circle size="small" @click="killTask(scope.row)"></el-button>
+              <el-button v-show="scope.row.task_status==0" type="danger" icon="el-icon-close" circle size="small" @click="killTask(scope.row)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="Grafana实时监控" placement="top" :enterable="false">
-              <el-button type="success" icon="el-icon-monitor" circle size="small" @click="goGrafana(scope.row)"></el-button>
+              <el-button type="success" icon="el-icon-monitor" circle size="small" @click="goGrafana(scope.row)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="查看汇总报告" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-s-data" circle size="small" @click="getAggregateReport(scope.row)"></el-button>
+              <el-button v-show="scope.row.task_status==3" type="primary" icon="el-icon-s-data" circle size="small" @click="getAggregateReport(scope.row)"/>
             </el-tooltip>
           </template>
         </el-table-column>

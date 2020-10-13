@@ -96,10 +96,10 @@ export default {
     headerParamInput
   },
   methods: {
-    // 初始化默认参数
+    // 重置默认参数
     initForm() {
       // 使用setTimeout作用是防止子组件没有初始化完成
-      // 初始化参数输入框信息
+      // 初始化参数输入框信息，需要异步执行
       setTimeout(() => {
         // 初始化必填参数，必须放这里，不然可能组件没有加载完成就会报错
         this.$refs.createJmxFormRef.resetFields()
