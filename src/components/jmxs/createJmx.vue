@@ -2,7 +2,7 @@
   <div>
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm">新建</el-button>
-    <el-dialog title="创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
+    <el-dialog title="快速创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
       <el-form ref="createJmxFormRef" :model="createJmxForm" :rules="createJmxFormRules" label-width="80px">
         <el-form-item label="JMX名称" prop="jmxName">
           <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"></el-input>
@@ -26,7 +26,7 @@
         <el-form-item label="请求头">
           <div style="margin-bottom: 4px"/>
           <!-- 调用子组件 -->
-          <headerParamInput ref="header"/>
+          <headerParamInput ref="header" v-if="createJmxDialogVisible"/>
         </el-form-item>
         <el-form-item label="参数">
           <div style="margin-bottom: 5px">
@@ -42,6 +42,10 @@
           <formParamInput ref="formparamRef" v-show="createJmxForm.paramType==='form'"/>
           <rawParamInput ref="rawparamRef" v-show="createJmxForm.paramType==='raw'"/>
         </el-form-item>
+        <el-form-item label="响应断言">
+            <!-- 使用v-if的作用是强制重新重新加载断言输入框，能起到强制重置的作用 -->
+            <rspAssertParaamInput ref="rspparamRef" v-if="createJmxDialogVisible"/>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="createJmxDialogVisible = false">取 消</el-button>
@@ -55,6 +59,7 @@
 import formParamInput from './formParamInput.vue'
 import rawParamInput from './rawParamInput.vue'
 import headerParamInput from './headerParamInput.vue'
+import rspAssertParaamInput from './rspAssertParamInput'
 
 export default {
   data () {
@@ -62,10 +67,6 @@ export default {
       radio: 'form类型',
       // 默认显示form表单参数
       createJmxDialogVisible: false,
-      headerInfo: {
-        sapmlerId: '',
-        params: []
-      },
       createJmxForm: {
         jmxName: '',
         samplerName: '',
@@ -93,7 +94,8 @@ export default {
   components: {
     formParamInput,
     rawParamInput,
-    headerParamInput
+    headerParamInput,
+    rspAssertParaamInput
   },
   methods: {
     // 重置默认参数
@@ -103,16 +105,11 @@ export default {
       setTimeout(() => {
         // 初始化必填参数，必须放这里，不然可能组件没有加载完成就会报错
         this.$refs.createJmxFormRef.resetFields()
-        // 重置头信息的参数输入框
-        this.$refs.header.headerParamFormData.list = [{ key: 'Content-Type', value: 'application/json;charset=UTF-8' }]
-        // 重置form参数的输入框
+        // 因为使用的v-show来显示，所以需要手动重置，重置form参数的输入框
         this.$refs.formparamRef.formParamFormData.list = [{ key: '', value: '' }]
         // 重置raw参数的输入框
         this.$refs.rawparamRef.rawParamFormData.textarea = ''
         this.radio = 'form类型'
-        // 初始化头信息
-        this.headerInfo.sapmlerId = ''
-        this.headerInfo.params = []
         // 重置默认参数
         this.createJmxForm.method = 'GET'
         this.createJmxForm.paramType = 'form'
@@ -140,15 +137,23 @@ export default {
         } else if (this.createJmxForm.paramType === 'raw') {
           this.createJmxForm.params = this.$refs.rawparamRef.rawParamFormData.textarea
         }
+        // 创建jmx
         const { data: createJmxRes } = await this.$http.post('jmxs/create', this.createJmxForm)
         if (createJmxRes.code !== 200) {
           this.$message.error('创建JMX失败')
         } else {
-          this.headerInfo.sapmlerId = createJmxRes.data.sapmlerId
-          this.headerInfo.params = this.$refs.header.headerParamFormData.list
-          const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.headerInfo)
+          // 创建头信息
+          this.$refs.header.headerParamFormData.sapmlerId = createJmxRes.data.sapmlerId
+          const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.$refs.header.headerParamFormData)
           if (createHeaderRes.code !== 200) {
             this.$message.error('创建header失败')
+          } else {
+            // 创建响应断言
+            this.$refs.rspparamRef.rspAssertParamFormData.sapmlerId = createJmxRes.data.sapmlerId
+            const { data: createRspAssertRes } = await this.$http.post('/samplers/create_rsp_assert', this.$refs.rspparamRef.rspAssertParamFormData)
+            if (createRspAssertRes.code !== 200) {
+              this.$message.error('创建响应断言失败')
+            }
           }
         }
         this.createJmxDialogVisible = false

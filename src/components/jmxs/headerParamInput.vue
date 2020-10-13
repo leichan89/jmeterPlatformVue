@@ -2,14 +2,14 @@
   <el-form :model="headerParamFormData" status-icon style="width:100%" size="small">
     <!-- 参数输入 -->
     <el-form-item>
-      <el-row :gutter="10" v-for="(item,index) in headerParamFormData.list" :key="index" class="alignT">
+      <el-row :gutter="10" v-for="(item,index) in headerParamFormData.params" :key="index" class="alignT">
         <el-col>
-          <el-form-item :prop="'list[' + index + '].key'">
+          <el-form-item :prop="'params[' + index + '].key'">
             <el-input placeholder="请输入key" v-model="item.key" auto-complete="off"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
-          <el-form-item :prop="'list[' + index + '].value'">
+          <el-form-item :prop="'params[' + index + '].value'">
             <el-input placeholder="请输入value" v-model="item.value" auto-complete="off"></el-input>
           </el-form-item>
         </el-col>
@@ -28,7 +28,8 @@ export default {
   data() {
     return {
       headerParamFormData: {
-        list: [
+        sapmlerId: '',
+        params: [
           { key: 'Content-Type', value: 'application/json;charset=UTF-8' }
         ]
       }
@@ -38,38 +39,11 @@ export default {
     // 表单增减操作
     paramListMethod(n) {
       if (n > 0) {
-        this.headerParamFormData.list.splice(n, 1)
+        this.headerParamFormData.params.splice(n, 1)
       } else {
         const o = { key: '', value: '' }
-        this.headerParamFormData.list.push(o)
+        this.headerParamFormData.params.push(o)
       }
-    },
-    // 姓名校验方法
-    rule_name(rule, value, callback) {
-      console.log(value)
-      // 姓名不能为空
-      if (!value) {
-        return callback(new Error('请输入姓名'))
-      }
-      callback()
-    },
-    // 年龄校验方法
-    rule_age(rule, value, callback) {
-      if (!value) {
-        return callback(new Error('请输入年龄'))
-      }
-
-      const n = Number(value)
-
-      if (n < 1) {
-        return callback(new Error('年龄不能小于1岁'))
-      }
-
-      if (n > 200) {
-        return callback(new Error('年龄不能大于200岁'))
-      }
-
-      callback()
     }
   }
 }
