@@ -2,7 +2,7 @@
   <el-form :model="rspAssertParamFormData" status-icon style="width:100%">
     <el-form-item>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="11">
           <el-radio-group v-model="radio" @change="toChangeRadio(radio)" size="small">
             <el-radio-button label="包括"/>
             <el-radio-button label="匹配"/>
