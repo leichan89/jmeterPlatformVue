@@ -3,8 +3,11 @@
     <!--  头部区域  -->
     <el-header>
       <div>
-        <img src="../assets/target.png" alt="" height="25">
         <span>性能测试平台</span>
+        <div class="toggle-button" @click=toggleCollapse>
+          <i v-if="isCollapse===false" class="el-icon-s-fold"></i>
+          <i v-if="isCollapse" class="el-icon-s-unfold"></i>
+        </div>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -13,7 +16,6 @@
       <!-- 侧边栏区域 -->
       <!-- 根据isCollapse属性，动态修改侧边栏的宽度 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
-        <div class="toggle-button" @click=toggleCollapse>|||</div>
         <!-- 侧边栏菜单区 -->
         <!-- active-text-color激活的文本的颜色，点击菜单时，字体的颜色 -->
         <!-- unique-opened="true"前面必须加一个冒号，不加冒号后面的true只是一个字符串，加冒号表示属性绑定 -->
@@ -63,10 +65,10 @@ export default {
       iconsObj: {
         // key是不需要引号的
         125: 'iconfont icon-user',
-        103: 'iconfont icon-tijikongjian',
-        101: 'iconfont icon-shangpin',
-        102: 'iconfont icon-danju',
-        145: 'iconfont icon-baobiao'
+        103: 'el-icon-s-flag',
+        101: 'el-icon-files',
+        102: 'el-icon-notebook-2',
+        145: 'el-icon-pie-chart'
       },
       // 是否折叠
       isCollapse: false,
@@ -127,7 +129,7 @@ export default {
     display: flex;
     align-items: center;
     span {
-      margin-left: 15px;
+      margin-left: 23px;
     }
   }
 }
@@ -150,14 +152,15 @@ export default {
 
 // 展开和收起字符的样式
 .toggle-button {
-  background-color: #4A5064;
-  font-size: 10px;
-  line-height: 24px;
+  /*background-color: #4A5064;*/
+  font-size: 26px;
+  /*line-height: 22px;*/
   color: #fff;
   // 居中显示
   text-align: center;
-  // 字符之间的艰巨
-  letter-spacing: 0.2em;
+  margin-left: 21px;
+  /*// 字符之间的间距*/
+  /*letter-spacing: 0.2em;*/
   // 鼠标在移动到菜单区域时，会变成小手
   cursor: pointer;
 }

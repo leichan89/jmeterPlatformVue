@@ -35,3 +35,10 @@ body,
 .input-with-select .el-input-group__prepend {
 background-color: #fff;
 }
+
+.myicon {
+  /*background-color: #4A5064;*/
+  font-size: 16px;
+  /*line-height: 22px;*/
+  color: #fff;
+}

@@ -36,13 +36,13 @@
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="停止" placement="top" :enterable="false">
               <!-- 使用v-if的原因是，如果使用v-show会出图标错位 -->
-              <el-button v-if="scope.row.task_status==0" type="danger" icon="el-icon-close" circle size="small" @click="killTask(scope.row)"/>
+              <el-button class="myicon" v-if="scope.row.task_status==0" type="danger" icon="el-icon-close" circle size="small" @click="killTask(scope.row)"/>
             </el-tooltip>
             <el-tooltip v-if="scope.row.task_status==0" effect="dark" content="Grafana实时监控" placement="top" :enterable="false">
-              <el-button type="success" icon="el-icon-monitor" circle size="small" @click="goGrafana(scope.row)"/>
+              <el-button class="myicon" type="success" icon="el-icon-monitor" circle size="small" @click="goGrafana(scope.row)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="查看汇总报告" placement="top" :enterable="false">
-              <el-button v-if="scope.row.task_status==3" type="primary" icon="el-icon-s-data" circle size="small" @click="getAggregateReport(scope.row)"/>
+              <el-button class="myicon" v-if="scope.row.task_status==3" type="primary" icon="el-icon-s-data" circle size="small" @click="getAggregateReport(scope.row)"/>
             </el-tooltip>
           </template>
         </el-table-column>

@@ -31,7 +31,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="运行任务" placement="top" :enterable="false">
-              <el-button type="success" size="small" icon="el-icon-video-play" circle @click="runTask(scope.row)"></el-button>
+              <el-button class="myicon" type="success" size="small" icon="el-icon-video-play" circle @click="runTask(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>

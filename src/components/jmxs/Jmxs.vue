@@ -34,10 +34,10 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
+              <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="运行" placement="top" :enterable="false">
-              <el-button type="success" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>
+              <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
