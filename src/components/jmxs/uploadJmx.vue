@@ -50,7 +50,7 @@ export default {
           { required: true, message: '请输入jmx文件别名', trigger: 'blur' }
         ],
         fileList: [
-          { required: true, message: '请选择文件', trigger: 'blur' }
+          { required: true, message: '请选择文件' }
         ]
       }
     }
