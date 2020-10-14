@@ -4,7 +4,7 @@
     <el-button type="primary" @click="initForm">新建</el-button>
     <el-dialog title="快速创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
       <el-form ref="createJmxFormRef" :model="createJmxForm" :rules="createJmxFormRules" label-width="80px">
-        <el-form-item label="JMX名称" prop="jmxName">
+        <el-form-item label="文件名称" prop="jmxName">
           <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"></el-input>
         </el-form-item>
         <el-form-item label="请求名称" prop="samplerName">
@@ -100,10 +100,11 @@ export default {
   methods: {
     // 重置默认参数
     initForm() {
+      this.createJmxDialogVisible = true
       // 使用setTimeout作用是防止子组件没有初始化完成
       // 初始化参数输入框信息，需要异步执行
       setTimeout(() => {
-        // 初始化必填参数，必须放这里，不然可能组件没有加载完成就会报错
+        // 初始化必填参数，必须放这里，不然可能组件没有加载完成就会报错，重置的字段需要有prop属性
         this.$refs.createJmxFormRef.resetFields()
         // 因为使用的v-show来显示，所以需要手动重置，重置form参数的输入框
         this.$refs.formparamRef.formParamFormData.list = [{ key: '', value: '' }]
@@ -116,7 +117,6 @@ export default {
         this.createJmxForm.params = ''
         this.createJmxForm.addUser = ''
       }, 10)
-      this.createJmxDialogVisible = true
     },
     // 再form和raw之间切换
     tabChange(tab) {

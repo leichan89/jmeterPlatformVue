@@ -13,7 +13,7 @@
         <el-col :span="3" style="margin-top: 1px">
           <el-checkbox v-model="checkedFalse" @change="toChangeFalse" label="否" border size="small"/>
         </el-col>
-        <el-col :span="1" style="margin-top: 1px">
+        <el-col :span="10" style="margin-top: 1px">
           <el-checkbox v-model="checkedOr" @change="toChangeOr" label="或者" border size="small"/>
         </el-col>
       </el-row>
