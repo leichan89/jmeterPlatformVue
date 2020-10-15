@@ -44,7 +44,7 @@ export default {
         // 记录上传文件信息的列表，主要包含文件路径，名称，大小等信息
         fileList: []
       },
-      // 校验必填参数
+      // 校验必填参数，上传fileList校验添加后会报错，最好不添加
       uploadFormRules: {
         jmxName: [
           { required: true, message: '请输入jmx文件别名', trigger: 'blur' }
