@@ -48,9 +48,6 @@ export default {
       uploadFormRules: {
         jmxName: [
           { required: true, message: '请输入jmx文件别名', trigger: 'blur' }
-        ],
-        fileList: [
-          { required: true, message: '请选择文件' }
         ]
       }
     }
@@ -59,8 +56,10 @@ export default {
     // 上传对话框初始化操作，需要清除输入框和上传列表数据
     initForm() {
       this.uploadFormVisible = true
-      // 重置必须又有ref,绑定form,需要重置的字段需要有prop属性
-      this.$refs.uploadFormRef.resetFields()
+      setTimeout(() => {
+        // 重置必须又有ref,绑定form,需要重置的字段需要有prop属性
+        this.$refs.uploadFormRef.resetFields()
+      })
     },
     // 上传文件，使用form-data上传，需要自己获取到文件流
     async uploadSectionFile(param) {

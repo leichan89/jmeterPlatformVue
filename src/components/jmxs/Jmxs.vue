@@ -47,7 +47,7 @@
       <el-dialog title="添加到任务" :visible.sync="toTaskFormVisible" width="30%">
         <el-form :model="toTaskForm">
           <el-form-item label="选择任务">
-            <el-select v-model="toTaskForm.task" filterable :filter-method="taskFilter" clearable placeholder="请输入任务名称" style="width: 80%;">
+            <el-select v-model="toTaskForm.task" filterable :filter-method="taskFilter" clearable size="small" placeholder="请输入任务名称" style="width: 80%;">
               <el-option v-for="item in tasksList" :key="item.id" :label="item.task_name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>

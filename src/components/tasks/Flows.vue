@@ -25,10 +25,26 @@
         <el-table-column label="流水号" prop="celery_task_id"></el-table-column>
         <el-table-column label="状态" prop="task_status">
           <template slot-scope="scope">
-            <span v-if="scope.row.task_status==0" :style="{'color': '#3CB371'}">运行中</span>
-            <span v-if="scope.row.task_status==1" :style="{'color': '#FF8C00'}">已停止</span>
-            <span v-if="scope.row.task_status==2" :style="{'color': '#FF0000'}">运行异常</span>
-            <span v-if="scope.row.task_status==3" :style="{'color': '#008ecf'}">已结束</span>
+            <span v-if="scope.row.task_status==0">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="info">运行中</el-tag>
+              </div>
+            </span>
+            <span v-if="scope.row.task_status==1">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="warning">已停止</el-tag>
+              </div>
+            </span>
+            <span v-if="scope.row.task_status==2">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="danger">运行异常</el-tag>
+              </div>
+            </span>
+            <span v-if="scope.row.task_status==3">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="success">已结束</el-tag>
+              </div>
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="开始时间" prop="add_time"></el-table-column>
