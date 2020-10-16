@@ -29,7 +29,7 @@
           <headerParamInput ref="header" v-if="createJmxDialogVisible"/>
         </el-form-item>
         <el-form-item label="参数">
-          <div style="margin-bottom: 5px">
+          <div style="margin-bottom: 7px">
             <!-- 切换tab的时候，修改paramType的值，radio的值要和label的值相等 -->
             <el-radio-group v-model="radio" @change="tabChange(radio)" size="small">
               <el-radio-button label="form类型"></el-radio-button>

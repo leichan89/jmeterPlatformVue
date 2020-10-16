@@ -19,16 +19,7 @@
       </el-row>
     </el-form-item>
     <el-form-item>
-      <el-row :gutter="10" v-for="(item,index) in rspAssertParamFormData.assertContent" :key="index" class="alignT">
-        <el-col>
-          <el-form-item :prop="'assertContent[' + index + '].key'">
-            <el-input type="textarea" :rows="1" placeholder="请输入断言信息" v-model="item.key" auto-complete="off"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="1">
-          <i class="iconBtn" @click="paramListMethod(index)" :class="{'el-icon-circle-plus-outline': index == 0,'el-icon-remove-outline': index>0}"></i>
-        </el-col>
-      </el-row>
+      <el-input style="margin-top: 4px" type="textarea" :rows="5" placeholder="请输入断言信息" v-model="rspAssertParamFormData.assertContent"/>
     </el-form-item>
   </el-form>
 </template>
@@ -39,9 +30,7 @@ export default {
     return {
       rspAssertParamFormData: {
         sapmlerId: '',
-        assertContent: [
-          { key: '' }
-        ],
+        assertContent: '',
         radioStr: 'D',
         checkedFalseStr: 'e',
         checkedOrStr: 'f'
@@ -52,15 +41,6 @@ export default {
     }
   },
   methods: {
-    // 表单增减操作
-    paramListMethod(n) {
-      if (n > 0) {
-        this.rspAssertParamFormData.assertContent.splice(n, 1)
-      } else {
-        const o = { key: '' }
-        this.rspAssertParamFormData.assertContent.push(o)
-      }
-    },
     toChangeRadio(radio) {
       if (radio === '包括') {
         this.rspAssertParamFormData.radioStr = 'A'
@@ -89,17 +69,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.alignT {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 6px;
-}
-.iconBtn {
-  color: #409eff;
-  font-size: 22px;
-  cursor: pointer;
-  margin-top: 12px
-}
-</style>
