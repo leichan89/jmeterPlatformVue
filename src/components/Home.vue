@@ -95,7 +95,7 @@ export default {
       // 将获取到的数据写入到data中
       this.menulist = res.data.menuList
     },
-    // 点击|||展开或者折叠
+    // 点击展开或者折叠
     toggleCollapse () {
       // 对isCollapse取反
       this.isCollapse = !this.isCollapse

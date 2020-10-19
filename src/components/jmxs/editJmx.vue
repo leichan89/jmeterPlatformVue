@@ -4,7 +4,8 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>JMX管理</el-breadcrumb-item>
-      <el-breadcrumb-item>JMX列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/jmxs' }">JMX列表</el-breadcrumb-item>
+      <el-breadcrumb-item>编辑JMX</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 卡片视图区 -->
@@ -35,9 +36,6 @@
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
               <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
-            </el-tooltip>
-            <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-              <el-button type="primary" class="myicon" size="small" icon="el-icon-edit" circle @click="editJmx(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="运行" placement="top" :enterable="false">
               <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>
@@ -113,6 +111,7 @@ export default {
   },
   methods: {
     async getJmxsList() {
+      console.log(this.$route.params.id)
       const { data: res } = await this.$http.get('jmxs', {
         params: this.queryInfo
       })
@@ -178,17 +177,6 @@ export default {
         return this.$message.error(res.msg)
       }
       return this.$message.success('运行成功！')
-    },
-    // 跳转到编辑页面
-    editJmx(jmxInfo) {
-      this.$router.push({
-        // 这个名字和router/index.js中的路由的名称一致
-        name: 'editJmx',
-        // 传值到另外一个组件，获取方式：this.$route.params.id
-        params: {
-          id: jmxInfo.id
-        }
-      })
     }
   }
 }

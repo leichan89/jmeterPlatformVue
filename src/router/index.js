@@ -6,6 +6,7 @@ import Welcome from '../components/Welcome.vue'
 import Jmxs from '../components/jmxs/Jmxs.vue'
 import Tasks from '../components/tasks/Tasks.vue'
 import Flows from '../components/tasks/Flows.vue'
+import editJmx from '../components/jmxs/editJmx.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
       {
         path: '/jmxs',
         component: Jmxs
+      },
+      {
+        path: '/jmxs/edit',
+        component: editJmx,
+        name: 'editJmx'
       },
       {
         path: '/tasks',
