@@ -181,6 +181,7 @@ export default {
     },
     // 跳转到编辑页面
     editJmx(jmxInfo) {
+      window.sessionStorage.setItem('jmxId', jmxInfo.id)
       this.$router.push({
         // 这个名字和router/index.js中的路由的名称一致
         name: 'editJmx',
