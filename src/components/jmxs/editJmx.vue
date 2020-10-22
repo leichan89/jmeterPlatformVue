@@ -37,7 +37,7 @@
           <createSampler/>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="small">上传CSV</el-button>
+          <uploadCsv/>
         </el-col>
       </el-row>
       <!-- 用户列表区 -->
@@ -78,6 +78,7 @@
 <script>
 
 import createSampler from './createSampler'
+import uploadCsv from './uploadCsv'
 
 export default {
   data() {
@@ -115,7 +116,8 @@ export default {
     }
   },
   components: {
-    createSampler
+    createSampler,
+    uploadCsv
   },
   // 页面加载前调用
   created() {

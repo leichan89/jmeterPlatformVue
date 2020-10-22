@@ -140,23 +140,24 @@ export default {
         // 创建jmx
         const { data: createJmxRes } = await this.$http.post('jmxs/create', this.createJmxForm)
         if (createJmxRes.code !== 200) {
-          this.$message.error('创建JMX失败')
+          return this.$message.error('创建JMX失败')
         } else {
           // 创建头信息
           this.$refs.header.headerParamFormData.sapmlerId = createJmxRes.data.sapmlerId
           const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.$refs.header.headerParamFormData)
           if (createHeaderRes.code !== 200) {
-            this.$message.error('创建header失败')
+            return this.$message.error('创建header失败')
           } else {
             // 创建响应断言
             this.$refs.rspparamRef.rspAssertParamFormData.sapmlerId = createJmxRes.data.sapmlerId
             const { data: createRspAssertRes } = await this.$http.post('/samplers/create_rsp_assert', this.$refs.rspparamRef.rspAssertParamFormData)
             if (createRspAssertRes.code !== 200) {
-              this.$message.error('创建响应断言失败')
+              return this.$message.error('创建响应断言失败')
             }
           }
         }
         this.createJmxDialogVisible = false
+        return this.$message.success('创建成功')
       })
     }
   }
