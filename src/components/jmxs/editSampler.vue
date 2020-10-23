@@ -108,7 +108,7 @@ export default {
         return this.$message.error('获取请求信息失败')
       }
       const childInfo = JSON.parse(samplerInfoRes.data.child_info)
-      this.createSamplerForm.samplerName = childInfo.name
+      this.createSamplerForm.samplerName = samplerInfoRes.data.child_name
       this.createSamplerForm.url = childInfo.url
       this.createSamplerForm.method = childInfo.method
       this.createSamplerForm.paramType = childInfo.param_type
@@ -120,7 +120,7 @@ export default {
           this.$refs.rawparamRef.rawParamFormData.textarea = childInfo.params
         } else {
           this.radio = 'form类型'
-          this.$refs.formparamRef.formParamFormData.list = [{ key: '', value: '' }]
+          this.$refs.formparamRef.formParamFormData.list = childInfo.params
         }
       }, 10)
     },
