@@ -135,7 +135,7 @@ export default {
           this.createSamplerForm.params = this.$refs.rawparamRef.rawParamFormData.textarea
         }
         // 创建jmx
-        const { data: createSamplerRes } = await this.$http.post('samplers/create_update', this.createSamplerForm)
+        const { data: createSamplerRes } = await this.$http.post('/samplers/create_update', this.createSamplerForm)
         if (createSamplerRes.code !== 200) {
           return this.$message.error('修改请求失败')
         }

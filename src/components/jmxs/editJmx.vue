@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     async getThreadGroupChildren() {
-      const { data: res } = await this.$http.get(`jmxs/thread_group_children/${this.jmxId}`, {
+      const { data: res } = await this.$http.get(`/jmxs/thread_group_children/${this.jmxId}`, {
         params: this.queryInfo
       })
       if (res.code !== 200) {

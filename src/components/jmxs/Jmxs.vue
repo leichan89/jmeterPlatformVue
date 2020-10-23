@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     async getJmxsList() {
-      const { data: res } = await this.$http.get('jmxs', {
+      const { data: res } = await this.$http.get('/jmxs', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
@@ -138,7 +138,7 @@ export default {
     },
     // 获取任务列表，将搜索结果放到一个list中，便于使用过滤器过滤
     async getTasksList() {
-      const { data: res } = await this.$http.get('tasks?size=1000')
+      const { data: res } = await this.$http.get('/tasks?size=1000')
       if (res.code !== 200) {
         return this.$message.error('获取任务列表失败')
       }
@@ -163,7 +163,7 @@ export default {
     },
     // 绑定事件提交按钮
     async bindSubmit() {
-      const { data: res } = await this.$http.post('tasks/bindjmxs', this.toTaskForm)
+      const { data: res } = await this.$http.post('/tasks/bindjmxs', this.toTaskForm)
       if (res.code !== 200) {
         return this.$message.error(res.msg)
       }
@@ -173,7 +173,7 @@ export default {
     // 运行任务的事件
     async runJmx(jmxInfo) {
       const userId = window.sessionStorage.getItem('userId')
-      const { data: res } = await this.$http.post(`tasks/runjmx/${userId}/${jmxInfo.id}`)
+      const { data: res } = await this.$http.post(`/tasks/runjmx/${userId}/${jmxInfo.id}`)
       if (res.code !== 200) {
         return this.$message.error(res.msg)
       }

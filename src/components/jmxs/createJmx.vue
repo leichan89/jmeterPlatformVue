@@ -138,19 +138,19 @@ export default {
           this.createJmxForm.params = this.$refs.rawparamRef.rawParamFormData.textarea
         }
         // 创建jmx
-        const { data: createJmxRes } = await this.$http.post('jmxs/create', this.createJmxForm)
+        const { data: createJmxRes } = await this.$http.post('/jmxs/create', this.createJmxForm)
         if (createJmxRes.code !== 200) {
           return this.$message.error('创建JMX失败')
         } else {
           // 创建头信息
           this.$refs.header.headerParamFormData.sapmlerId = createJmxRes.data.sapmlerId
-          const { data: createHeaderRes } = await this.$http.post('/samplers/create_header', this.$refs.header.headerParamFormData)
+          const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.$refs.header.headerParamFormData)
           if (createHeaderRes.code !== 200) {
             return this.$message.error('创建header失败')
           } else {
             // 创建响应断言
             this.$refs.rspparamRef.rspAssertParamFormData.sapmlerId = createJmxRes.data.sapmlerId
-            const { data: createRspAssertRes } = await this.$http.post('/samplers/create_rsp_assert', this.$refs.rspparamRef.rspAssertParamFormData)
+            const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.$refs.rspparamRef.rspAssertParamFormData)
             if (createRspAssertRes.code !== 200) {
               return this.$message.error('创建响应断言失败')
             }

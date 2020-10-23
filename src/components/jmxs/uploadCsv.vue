@@ -126,7 +126,7 @@ export default {
       form.append('userId', window.sessionStorage.getItem('userId'))
       form.append('jmxId', window.sessionStorage.getItem('jmxId'))
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      const { data: res } = await this.$http.post('jmxs/uploadcsv', form, config)
+      const { data: res } = await this.$http.post('/jmxs/uploadcsv', form, config)
       if (res.code !== 200) {
         return this.$message.error('上传失败')
       }

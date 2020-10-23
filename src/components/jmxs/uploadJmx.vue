@@ -70,7 +70,7 @@ export default {
       form.append('jmxName', this.uploadForm.jmxName)
       form.append('addUser', window.sessionStorage.getItem('userId'))
       const config = { headers: { 'Content-Type': 'multipart/form-data' } }
-      const { data: res } = await this.$http.post('jmxs/upload', form, config)
+      const { data: res } = await this.$http.post('/jmxs/upload', form, config)
       if (res.code !== 200) {
         return this.$message.error('上传失败')
       }
