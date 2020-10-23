@@ -43,34 +43,19 @@
       <!-- 用户列表区 -->
       <el-table :data="childrenList" border stripe>
         <el-table-column label="id" prop="id"></el-table-column>
-        <el-table-column label="HTTP请求名称" prop="child_name"></el-table-column>
+        <el-table-column label="线程组子元素名称" prop="child_name"></el-table-column>
         <el-table-column label="创建时间" prop="add_time"></el-table-column>
-        <!--<el-table-column label="操作">-->
-        <!--  <template slot-scope="scope">-->
-        <!--    <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">-->
-        <!--      <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>-->
-        <!--    </el-tooltip>-->
-        <!--    <el-tooltip effect="dark" content="运行" placement="top" :enterable="false">-->
-        <!--      <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>-->
-        <!--    </el-tooltip>-->
-        <!--  </template>-->
-        <!--</el-table-column>-->
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-tooltip effect="dark" content="修改" placement="top" :enterable="false" v-if="scope.row.child_type === 'sampler'">
+              <editSampler :samplerId="scope.row.id"/>
+            </el-tooltip>
+            <!--<el-tooltip effect="dark" content="运行" placement="top" :enterable="false">-->
+            <!--  <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>-->
+            <!--</el-tooltip>-->
+          </template>
+        </el-table-column>
       </el-table>
-
-      <!--&lt;!&ndash; 添加到任务对话框 &ndash;&gt;-->
-      <!--<el-dialog title="添加到任务" :visible.sync="toTaskFormVisible" width="30%">-->
-      <!--  <el-form :model="toTaskForm">-->
-      <!--    <el-form-item label="选择任务">-->
-      <!--      <el-select v-model="toTaskForm.task" filterable :filter-method="taskFilter" clearable size="small" placeholder="请输入任务名称" style="width: 80%;">-->
-      <!--        <el-option v-for="item in tasksList" :key="item.id" :label="item.task_name" :value="item.id"></el-option>-->
-      <!--      </el-select>-->
-      <!--    </el-form-item>-->
-      <!--  </el-form>-->
-      <!--  <div slot="footer" class="dialog-footer">-->
-      <!--    <el-button @click="toTaskFormVisible = false">取 消</el-button>-->
-      <!--    <el-button type="primary" @click="bindSubmit">确 定</el-button>-->
-      <!--  </div>-->
-      <!--</el-dialog>-->
     </el-card>
   </div>
 </template>
@@ -79,6 +64,7 @@
 
 import createSampler from './createSampler'
 import uploadCsv from './uploadCsv'
+import editSampler from './editSampler'
 
 export default {
   data() {
@@ -117,7 +103,8 @@ export default {
   },
   components: {
     createSampler,
-    uploadCsv
+    uploadCsv,
+    editSampler
   },
   // 页面加载前调用
   created() {
