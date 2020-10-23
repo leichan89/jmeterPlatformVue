@@ -47,12 +47,9 @@
         <el-table-column label="创建时间" prop="add_time"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-tooltip effect="dark" content="修改" placement="top" :enterable="false" v-if="scope.row.child_type === 'sampler'">
-              <editSampler :samplerId="scope.row.id"/>
+            <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
+              <editSampler v-if="scope.row.child_type==='sampler'" :samplerId="scope.row.id"/>
             </el-tooltip>
-            <!--<el-tooltip effect="dark" content="运行" placement="top" :enterable="false">-->
-            <!--  <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>-->
-            <!--</el-tooltip>-->
           </template>
         </el-table-column>
       </el-table>
