@@ -47,11 +47,12 @@
                 @expand-change="exChange"
                 :row-key='getRowKeys'
                 :expand-row-keys="expands">
-        <el-table-column label="id" prop="id" type="expand">
+        <el-table-column type="expand">
           <template slot-scope="scope">
             <samplerChildren v-if="isEx" :samplerId="scope.row.id"/>
           </template>
         </el-table-column>
+        <el-table-column label="id" prop="id"></el-table-column>
         <el-table-column label="线程组子元素名称" prop="child_name"></el-table-column>
         <el-table-column label="创建时间" prop="add_time"></el-table-column>
         <el-table-column label="操作">
@@ -123,7 +124,7 @@ export default {
   },
   methods: {
     async getThreadGroupChildren() {
-      const { data: res } = await this.$http.get(`/jmxs/thread_group_children/${this.jmxId}`, {
+      const { data: res } = await this.$http.get(`/jmxs/children/${this.jmxId}`, {
         params: this.queryInfo
       })
       if (res.code !== 200) {

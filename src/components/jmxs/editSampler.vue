@@ -103,7 +103,7 @@ export default {
     },
     // 获取接口信息
     async getSamplerInfo() {
-      const { data: samplerInfoRes } = await this.$http.get(`/samplers/${this.samplerId}`)
+      const { data: samplerInfoRes } = await this.$http.get(`/jmxs/child/${this.samplerId}`)
       if (samplerInfoRes.code !== 200) {
         return this.$message.error('获取请求信息失败')
       }
