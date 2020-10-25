@@ -41,17 +41,8 @@
         </el-col>
       </el-row>
       <!-- 用户列表区 -->
-      <el-table :data="childrenList"
-                border
-                stripe
-                @expand-change="exChange"
-                :row-key='getRowKeys'
-                :expand-row-keys="expands">
-        <el-table-column label="id" prop="id" type="expand">
-          <template slot-scope="scope">
-            <samplerChildren v-if="isEx" :samplerId="scope.row.id"/>
-          </template>
-        </el-table-column>
+      <el-table :data="childrenList" border stripe>
+        <el-table-column label="id" prop="id"></el-table-column>
         <el-table-column label="线程组子元素名称" prop="child_name"></el-table-column>
         <el-table-column label="创建时间" prop="add_time"></el-table-column>
         <el-table-column label="操作">
@@ -71,13 +62,10 @@
 import createSampler from './createSampler'
 import uploadCsv from './uploadCsv'
 import editSampler from './editSampler'
-import samplerChildren from './samplerChildren/samplerChildren'
 
 export default {
   data() {
     return {
-      isEx: false,
-      expands: [],
       jmxId: '',
       threadTypeOptions: [
         {
@@ -113,8 +101,7 @@ export default {
   components: {
     createSampler,
     uploadCsv,
-    editSampler,
-    samplerChildren
+    editSampler
   },
   // 页面加载前调用
   created() {
@@ -130,24 +117,6 @@ export default {
         return this.$message.error('获取列表失败')
       }
       this.childrenList = res.data
-    },
-    getRowKeys(row) {
-      return row.id
-    },
-    exChange(row, rowList) {
-      const that = this
-      if (rowList.length) {
-        that.expands = []
-        if (row) {
-          that.expands.push(row.id)
-        } else {
-          that.expands = []
-        }
-      }
-      // 在只展开一个后，当rowList为0就是收起，为0时就可以不发起请求
-      if (rowList.length) {
-        this.isEx = true
-      }
     }
   }
 }
