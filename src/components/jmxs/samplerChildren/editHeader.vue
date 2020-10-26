@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
-    <el-dialog title="修改头信息" :visible.sync="eidtHeaderDialogVisible" width="50%">
+    <el-dialog title="修改头信息" :visible.sync="eidtHeaderDialogVisible" width="40%">
       <el-form :model="headerParamFormData" status-icon style="width:100%" size="small">
         <!-- 参数输入 -->
         <el-form-item>
@@ -24,6 +24,10 @@
         <!--设置与下行信息的宽度-->
         <div style="margin-bottom: -35px"/>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="eidtHeaderDialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="submit" size="small">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -35,13 +39,12 @@ export default {
       eidtHeaderDialogVisible: false,
       headerParamFormData: {
         sapmlerId: '',
-        params: [
-          { key: 'Content-Type', value: 'application/json;charset=UTF-8' }
-        ]
+        childId: '',
+        params: []
       }
     }
   },
-  props: ['childId'],
+  props: ['sampId', 'childId'],
   methods: {
     initForm() {
       this.eidtHeaderDialogVisible = true
@@ -59,12 +62,22 @@ export default {
       }
     },
     async getHeaderInfo() {
-      const { data: headerInfoRes } = await this.$http.get(`samplers/children/${this.childId}`)
+      const { data: headerInfoRes } = await this.$http.get(`samplers/child/${this.childId}`)
       if (headerInfoRes.code !== 200) {
         return this.$message.error('获取头信息失败')
       }
       const childInfo = JSON.parse(headerInfoRes.data.child_info)
       this.headerParamFormData.params = childInfo.params
+    },
+    async submit() {
+      this.headerParamFormData.sapmlerId = this.sampId
+      this.headerParamFormData.childId = this.childId
+      const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.headerParamFormData)
+      if (createHeaderRes.code !== 200) {
+        return this.$message.error('修改请求头失败')
+      }
+      this.eidtHeaderDialogVisible = false
+      return this.$message.success('修改请求头成功')
     }
   }
 }
