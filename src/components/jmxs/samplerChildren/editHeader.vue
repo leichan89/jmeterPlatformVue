@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span style="margin-left: 10px">
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <el-dialog title="修改头信息" :visible.sync="eidtHeaderDialogVisible" width="40%">
       <el-form :model="headerParamFormData" status-icon style="width:100%" size="small">
@@ -29,7 +29,7 @@
         <el-button type="primary" @click="submit" size="small">确 定</el-button>
       </span>
     </el-dialog>
-  </div>
+  </span>
 </template>
 
 <script>

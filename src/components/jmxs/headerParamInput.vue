@@ -30,7 +30,7 @@ export default {
       headerParamFormData: {
         sapmlerId: '',
         params: [
-          { key: 'Content-Type', value: 'application/json;charset=UTF-8' }
+          { key: '', value: '' }
         ]
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span style="margin-left: 10px">
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <el-dialog title="修改请求" :visible.sync="editSamplerDialogVisible" width="50%">
@@ -40,7 +40,7 @@
         <el-button type="primary" @click="submit" size="small">确 定</el-button>
       </span>
     </el-dialog>
-  </div>
+  </span>
 </template>
 <script>
 

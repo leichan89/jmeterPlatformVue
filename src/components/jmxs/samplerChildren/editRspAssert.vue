@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span style="margin-left: 10px">
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <el-dialog title="修响应断言" :visible.sync="eidtRspAssertDialogVisible" width="40%">
       <el-form :model="rspAssertParamFormData" status-icon style="width:100%">
@@ -39,7 +39,7 @@
         <el-button type="primary" @click="submit" size="small">确 定</el-button>
       </span>
     </el-dialog>
-  </div>
+  </span>
 </template>
 <script>
 
@@ -110,7 +110,10 @@ export default {
         return this.$message.error('获取响应断言信息失败')
       }
       const childInfo = JSON.parse(rspAssertInfoRes.data.child_info)
-      this.rspAssertParamFormData.assertContent = childInfo.params
+      this.rspAssertParamFormData.assertContent = childInfo.params.rsp_assert_content
+      this.rspAssertParamFormData.radioStr = childInfo.params.rsp_assert_type[0]
+      this.rspAssertParamFormData.checkedFalseStr = childInfo.params.rsp_assert_type[1]
+      this.rspAssertParamFormData.checkedOrStr = childInfo.params.rsp_assert_type[2]
     },
     async submit() {
       this.rspAssertParamFormData.sapmlerId = this.sampId

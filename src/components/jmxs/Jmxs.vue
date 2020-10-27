@@ -27,20 +27,23 @@
 
       <!-- 用户列表区 -->
       <el-table :data="jmxsList" border stripe>
-        <el-table-column label="文件id" prop="id"></el-table-column>
+        <!--<el-table-column label="文件id" prop="id"></el-table-column>-->
         <el-table-column label="JMX名称" prop="jmx_alias"></el-table-column>
         <el-table-column label="上传人" prop="add_user.name"></el-table-column>
         <el-table-column label="上传时间" prop="add_time"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
-              <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
+              <el-button type="warning" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
               <el-button type="primary" class="myicon" size="small" icon="el-icon-edit" circle @click="editJmx(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="运行" placement="top" :enterable="false">
               <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="修改线程组属性" placement="top" :enterable="false">
+              <editThreadNum :jmxId="scope.row.id"/>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -79,6 +82,7 @@
 
 import createJmx from './createJmx.vue'
 import uploadJmx from './uploadJmx.vue'
+import editThreadNum from './editThreadNum.vue'
 
 export default {
   data() {
@@ -105,7 +109,8 @@ export default {
   // 引用的组件
   components: {
     createJmx,
-    uploadJmx
+    uploadJmx,
+    editThreadNum
   },
   // 页面加载前调用
   created() {
