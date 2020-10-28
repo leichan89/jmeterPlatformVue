@@ -175,6 +175,7 @@ export default {
           }
         }
         this.createSamplerDialogVisible = false
+        this.$emit('fatherFunc')
         return this.$message.success('创建成功')
       })
     }

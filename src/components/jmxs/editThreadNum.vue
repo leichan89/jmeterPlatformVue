@@ -13,7 +13,7 @@
           <el-input v-model="threadNumFormData.loops" placeholder="循环次数，-1为永久循环" size="small"/>
         </el-form-item>
         <el-form-item label="调度器">
-          <el-select v-model="threadNumFormData.scheduler" size="small" style="width:230px">
+          <el-select v-model="threadNumFormData.scheduler" size="small" style="width:100%">
             <el-option
               v-for="item in threadNumOptions"
               :key="item.value"

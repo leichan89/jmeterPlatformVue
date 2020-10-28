@@ -137,6 +137,7 @@ export default {
       this.$refs.uploadFormRef.validate(valid => {
         if (!valid) return
         this.$refs.upload.submit()
+        this.$emit('fatherFunc')
         this.uploadFormVisible = false
       })
     }

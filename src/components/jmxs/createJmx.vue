@@ -2,7 +2,7 @@
   <div>
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm">新建</el-button>
-    <el-dialog title="快速创建JMX" :visible.sync="createJmxDialogVisible" width="50%">
+    <el-dialog title="快速创建JMX" :visible.sync="createJmxDialogVisible" width="46%">
       <el-form ref="createJmxFormRef" :model="createJmxForm" :rules="createJmxFormRules" label-width="80px">
         <el-form-item label="文件名称" prop="jmxName">
           <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"></el-input>
@@ -157,6 +157,8 @@ export default {
           }
         }
         this.createJmxDialogVisible = false
+        // 调用父类的方法
+        this.$emit('fatherFunc')
         return this.$message.success('创建成功')
       })
     }

@@ -28,7 +28,8 @@ const routes = [
       },
       {
         path: '/jmxs',
-        component: Jmxs
+        component: Jmxs,
+        name: 'jmxs'
       },
       {
         path: '/jmxs/edit',

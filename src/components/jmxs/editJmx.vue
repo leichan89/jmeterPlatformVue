@@ -12,9 +12,10 @@
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
       <!-- gutter设置栅格的间距 -->
-      <el-row :gutter="80">
+      <el-row :gutter="10">
         <el-col :span="4">
-          <el-select v-model="queryInfo.child_thread" size="small" style="width:180px" @change="getThreadGroupChildren">
+          <!-- 注意使用style拉满100%的作用，配合span=10使用才能正确使用span -->
+          <el-select v-model="queryInfo.child_thread" size="small" style="width:100%" @change="getThreadGroupChildren">
             <el-option
               v-for="item in threadTypeOptions"
               :key="item.value"
@@ -24,7 +25,7 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="queryInfo.child_type" size="small" style="width:180px" @change="getThreadGroupChildren">
+          <el-select v-model="queryInfo.child_type" size="small" style="width:100%" @change="getThreadGroupChildren">
             <el-option
               v-for="item in threadChildrenTypeOptions"
               :key="item.value"
@@ -33,11 +34,12 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col :span="2">
-          <createSampler/>
+        <el-col :span="1.5">
+          <createSampler @fatherFunc="getThreadGroupChildren"/>
         </el-col>
         <el-col :span="2">
-          <uploadCsv/>
+          <!-- fatherFunc名称是自己定义的，可以随便写 -->
+          <uploadCsv @fatherFunc="getThreadGroupChildren"/>
         </el-col>
       </el-row>
       <!-- 用户列表区 -->

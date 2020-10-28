@@ -11,14 +11,17 @@
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
       <!-- gutter设置栅格的间距 -->
-      <el-row :gutter="40">
+      <el-row :gutter="10">
         <el-col :span="10">
-          <el-input placeholder="请输入内容" v-model="queryInfo.search" clearable @clear="getJmxsList">
+          <!-- 注意使用style拉满100%的作用，配合span=10使用才能正确使用span -->
+          <el-input placeholder="请输入内容" v-model="queryInfo.search" clearable @clear="getJmxsList" style="width: 100%">
             <el-button slot="append" icon="el-icon-search" @click="getJmxsList"></el-button>
           </el-input>
         </el-col>
-        <el-col :span="2">
-          <createJmx/>
+        <el-col :span="1.5">
+          <!-- fatherFunc名称是自己定义的，可以随便写 -->
+          <!-- 子类调用父类的方法：this.$emit('fatherFunc') -->
+          <createJmx @fatherFunc="getJmxsList"/>
         </el-col>
         <el-col :span="2">
           <uploadJmx/>
@@ -27,10 +30,10 @@
 
       <!-- 用户列表区 -->
       <el-table :data="jmxsList" border stripe>
-        <!--<el-table-column label="文件id" prop="id"></el-table-column>-->
+        <el-table-column label="文件id" prop="id"></el-table-column>
         <el-table-column label="JMX名称" prop="jmx_alias"></el-table-column>
-        <el-table-column label="上传人" prop="add_user.name"></el-table-column>
-        <el-table-column label="上传时间" prop="add_time"></el-table-column>
+        <el-table-column label="创建人" prop="add_user.name"></el-table-column>
+        <!--<el-table-column label="上传时间" prop="add_time"></el-table-column>-->
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
@@ -129,14 +132,12 @@ export default {
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
-      console.log(newSize)
       this.queryInfo.size = newSize
       // 每页显示条数发生变化后，重新请求数据
       this.getJmxsList()
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
-      console.log(newPage)
       this.queryInfo.num = newPage
       // 页码发生变化后，重新请求获取数据
       this.getJmxsList()
