@@ -7,7 +7,7 @@
           <el-input v-model="threadNumFormData.numThreads" placeholder="线程数" size="small"/>
         </el-form-item>
         <el-form-item label="RampUp" prop="rampTime">
-          <el-input v-model="threadNumFormData.rampTime" placeholder="Ramp-Up时间（秒）" size="small"/>
+          <el-input v-model="threadNumFormData.rampTime" placeholder="Ramp-Up时间（单位s）" size="small"/>
         </el-form-item>
         <el-form-item label="循环次数" prop="loops">
           <el-input v-model="threadNumFormData.loops" placeholder="循环次数，-1为永久循环" size="small"/>
@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="持续时间" prop="duration">
-          <el-input v-model="threadNumFormData.duration" placeholder="持续时间" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
+          <el-input v-model="threadNumFormData.duration" placeholder="持续时间（单位s）" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

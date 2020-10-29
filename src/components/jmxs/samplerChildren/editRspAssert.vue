@@ -48,7 +48,7 @@ export default {
     return {
       eidtRspAssertDialogVisible: false,
       rspAssertParamFormData: {
-        sapmlerId: '',
+        samplerId: '',
         childId: '',
         assertContent: [
           { key: '' }
@@ -116,7 +116,7 @@ export default {
       this.rspAssertParamFormData.checkedOrStr = childInfo.params.rsp_assert_type[2]
     },
     async submit() {
-      this.rspAssertParamFormData.sapmlerId = this.sampId
+      this.rspAssertParamFormData.samplerId = this.sampId
       this.rspAssertParamFormData.childId = this.childId
       const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.rspAssertParamFormData)
       if (createRspAssertRes.code !== 200) {

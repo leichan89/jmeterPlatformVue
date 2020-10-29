@@ -38,7 +38,7 @@ export default {
     return {
       eidtHeaderDialogVisible: false,
       headerParamFormData: {
-        sapmlerId: '',
+        samplerId: '',
         childId: '',
         params: []
       }
@@ -70,7 +70,7 @@ export default {
       this.headerParamFormData.params = childInfo.params
     },
     async submit() {
-      this.headerParamFormData.sapmlerId = this.sampId
+      this.headerParamFormData.samplerId = this.sampId
       this.headerParamFormData.childId = this.childId
       const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.headerParamFormData)
       if (createHeaderRes.code !== 200) {

@@ -161,13 +161,13 @@ export default {
           return this.$message.error('创建请求失败')
         } else {
           // 创建头信息
-          this.$refs.header.headerParamFormData.sapmlerId = createSamplerRes.data.sapmlerId
+          this.$refs.header.headerParamFormData.samplerId = createSamplerRes.data.samplerId
           const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.$refs.header.headerParamFormData)
           if (createHeaderRes.code !== 200) {
             return this.$message.error('创建header失败')
           } else {
             // 创建响应断言
-            this.$refs.rspparamRef.rspAssertParamFormData.sapmlerId = createSamplerRes.data.sapmlerId
+            this.$refs.rspparamRef.rspAssertParamFormData.samplerId = createSamplerRes.data.samplerId
             const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.$refs.rspparamRef.rspAssertParamFormData)
             if (createRspAssertRes.code !== 200) {
               return this.$message.error('创建响应断言失败')

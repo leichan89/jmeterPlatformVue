@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       rspAssertParamFormData: {
-        sapmlerId: '',
+        samplerId: '',
         assertContent: [
           { key: '' }
         ],

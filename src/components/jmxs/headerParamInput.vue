@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       headerParamFormData: {
-        sapmlerId: '',
+        samplerId: '',
         params: [
           { key: '', value: '' }
         ]
