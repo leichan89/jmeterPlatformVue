@@ -49,6 +49,7 @@ export default {
     initForm() {
       this.afterBeanShellVisible = true
       if (this.childId) {
+        this.$refs.afterBeanShellFormDataRef.resetFields()
         setTimeout(() => {
           this.getAfterBeanShellInfo()
         }, 10)

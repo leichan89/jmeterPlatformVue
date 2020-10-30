@@ -67,6 +67,7 @@ export default {
     initForm() {
       this.eidtRspAssertDialogVisible = true
       setTimeout(() => {
+        this.$refs.rspAssertParamFormDataRef.resetFields()
         this.getRspAssertInfo()
       }, 10)
     },

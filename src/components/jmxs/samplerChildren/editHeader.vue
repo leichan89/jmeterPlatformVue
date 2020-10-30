@@ -49,6 +49,7 @@ export default {
     initForm() {
       this.eidtHeaderDialogVisible = true
       setTimeout(() => {
+        this.$refs.headerParamFormDataRef.resetFields()
         this.getHeaderInfo()
       }, 10)
     },

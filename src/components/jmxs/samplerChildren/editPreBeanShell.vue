@@ -49,6 +49,7 @@ export default {
     initForm() {
       this.preBeanShellVisible = true
       if (this.childId) {
+        this.$refs.preBeanShellFormDataRef.resetFields()
         setTimeout(() => {
           this.getPreBeanShellInfo()
         }, 10)
