@@ -55,8 +55,10 @@ export default {
   methods: {
     initForm() {
       this.jsonExtractVisible = true
-      if (this.childId) {
+      setTimeout(() => {
         this.$refs.jsonExtractFormDataRef.resetFields()
+      })
+      if (this.childId) {
         setTimeout(() => {
           this.getJsonExtractInfo()
         }, 10)

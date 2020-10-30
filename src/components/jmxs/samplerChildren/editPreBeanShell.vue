@@ -48,8 +48,10 @@ export default {
   methods: {
     initForm() {
       this.preBeanShellVisible = true
-      if (this.childId) {
+      setTimeout(() => {
         this.$refs.preBeanShellFormDataRef.resetFields()
+      })
+      if (this.childId) {
         setTimeout(() => {
           this.getPreBeanShellInfo()
         }, 10)
