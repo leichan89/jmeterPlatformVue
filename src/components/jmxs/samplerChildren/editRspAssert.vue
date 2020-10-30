@@ -2,7 +2,7 @@
   <span style="margin-left: 10px">
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <el-dialog title="修响应断言" :visible.sync="eidtRspAssertDialogVisible" width="40%">
-      <el-form :model="rspAssertParamFormData" status-icon style="width:100%">
+      <el-form ref="rspAssertParamFormDataRef" :model="rspAssertParamFormData" status-icon style="width:100%">
         <el-form-item>
           <el-row>
             <el-col :span="11">
@@ -115,15 +115,18 @@ export default {
       this.rspAssertParamFormData.checkedFalseStr = childInfo.params.rsp_assert_type[1]
       this.rspAssertParamFormData.checkedOrStr = childInfo.params.rsp_assert_type[2]
     },
-    async submit() {
-      this.rspAssertParamFormData.samplerId = this.sampId
-      this.rspAssertParamFormData.childId = this.childId
-      const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.rspAssertParamFormData)
-      if (createRspAssertRes.code !== 200) {
-        return this.$message.error('修改响应断言失败')
-      }
-      this.eidtRspAssertDialogVisible = false
-      return this.$message.success('修改响应断言成功')
+    submit() {
+      this.$refs.rspAssertParamFormDataRef.validate(async valid => {
+        if (!valid) return
+        this.rspAssertParamFormData.samplerId = this.sampId
+        this.rspAssertParamFormData.childId = this.childId
+        const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.rspAssertParamFormData)
+        if (createRspAssertRes.code !== 200) {
+          return this.$message.error('修改响应断言失败')
+        }
+        this.eidtRspAssertDialogVisible = false
+        return this.$message.success('修改响应断言成功')
+      })
     }
   }
 }

@@ -2,7 +2,7 @@
   <span style="margin-left: 10px">
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <el-dialog title="修改头信息" :visible.sync="eidtHeaderDialogVisible" width="40%">
-      <el-form :model="headerParamFormData" status-icon style="width:100%" size="small">
+      <el-form ref="headerParamFormDataRef" :model="headerParamFormData" status-icon style="width:100%" size="small">
         <!-- 参数输入 -->
         <el-form-item>
           <el-row :gutter="10" v-for="(item,index) in headerParamFormData.params" :key="index" class="alignT">
@@ -69,15 +69,18 @@ export default {
       const childInfo = JSON.parse(headerInfoRes.data.child_info)
       this.headerParamFormData.params = childInfo.params
     },
-    async submit() {
-      this.headerParamFormData.samplerId = this.sampId
-      this.headerParamFormData.childId = this.childId
-      const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.headerParamFormData)
-      if (createHeaderRes.code !== 200) {
-        return this.$message.error('修改请求头失败')
-      }
-      this.eidtHeaderDialogVisible = false
-      return this.$message.success('修改请求头成功')
+    submit() {
+      this.$refs.headerParamFormDataRef.validate(async valid => {
+        if (!valid) return
+        this.headerParamFormData.samplerId = this.sampId
+        this.headerParamFormData.childId = this.childId
+        const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.headerParamFormData)
+        if (createHeaderRes.code !== 200) {
+          return this.$message.error('修改请求头失败')
+        }
+        this.eidtHeaderDialogVisible = false
+        return this.$message.success('修改请求头成功')
+      })
     }
   }
 }

@@ -2,7 +2,7 @@
   <span style="margin-left: 10px">
     <el-button type="info" @click="initForm" size="small" class="myicon" icon="el-icon-tickets" circle/>
     <el-dialog title="修改线程属性" :visible.sync="eidtThreadNumVisible" width="25%">
-      <el-form :model="threadNumFormData" status-icon size="small" label-width="80px" :rules="editThreadNumFormRules">
+      <el-form ref="editThreadNumFormRef" :model="threadNumFormData" status-icon size="small" label-width="80px" :rules="editThreadNumFormRules">
         <el-form-item label="线程数" prop="numThreads">
           <el-input v-model="threadNumFormData.numThreads" placeholder="线程数" size="small"/>
         </el-form-item>
@@ -92,13 +92,16 @@ export default {
       this.threadNumFormData.scheduler = threadNumInfo.scheduler
       this.threadNumFormData.duration = threadNumInfo.duration
     },
-    async submit() {
-      const { data: editThreadNum } = await this.$http.post('/jmxs/update_thread_num', this.threadNumFormData)
-      if (editThreadNum.code !== 200) {
-        return this.$message.error('修改线程组属性失败')
-      }
-      this.eidtThreadNumVisible = false
-      return this.$message.success('修改线程组属性成功')
+    submit() {
+      this.$refs.editThreadNumFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: editThreadNum } = await this.$http.post('/jmxs/update_thread_num', this.threadNumFormData)
+        if (editThreadNum.code !== 200) {
+          return this.$message.error('修改线程组属性失败')
+        }
+        this.eidtThreadNumVisible = false
+        return this.$message.success('修改线程组属性成功')
+      })
     }
   }
 }

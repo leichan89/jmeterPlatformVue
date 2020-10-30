@@ -15,6 +15,21 @@
             <el-tag size="medium" type="info">响应断言</el-tag>
           </div>
         </span>
+        <span v-if="scope.row.child_type==='json_extract'">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium" type="info">JSON提取器</el-tag>
+          </div>
+        </span>
+        <span v-if="scope.row.child_type==='pre_beanshell'">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium" type="info">前置BeanShell</el-tag>
+          </div>
+        </span>
+        <span v-if="scope.row.child_type==='after_beanshell'">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium" type="info">后置BeanShell</el-tag>
+          </div>
+        </span>
       </template>
     </el-table-column>
     <el-table-column label="添加时间" prop="add_time"></el-table-column>
@@ -26,6 +41,15 @@
         <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
           <editRspAssert v-if="scope.row.child_type==='rsp_assert'" :childId="scope.row.id" :sampId="sampId"/>
         </el-tooltip>
+        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
+          <editJsonExtract v-if="scope.row.child_type==='json_extract'" :childId="scope.row.id" :sampId="sampId"/>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
+          <editPreBeanShell v-if="scope.row.child_type==='pre_beanshell'" :childId="scope.row.id" :sampId="sampId"/>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
+          <editAfterBeanShell v-if="scope.row.child_type==='after_beanshell'" :childId="scope.row.id" :sampId="sampId"/>
+        </el-tooltip>
       </template>
     </el-table-column>
   </el-table>
@@ -35,6 +59,9 @@
 
 import editHeader from './editHeader'
 import editRspAssert from './editRspAssert'
+import editJsonExtract from './editJsonExtract'
+import editPreBeanShell from './editPreBeanShell'
+import editAfterBeanShell from './editAfterBeanShell'
 
 export default {
   data() {
@@ -49,7 +76,10 @@ export default {
   },
   components: {
     editHeader,
-    editRspAssert
+    editRspAssert,
+    editJsonExtract,
+    editPreBeanShell,
+    editAfterBeanShell
   },
   methods: {
     async getSamplerChildren() {
