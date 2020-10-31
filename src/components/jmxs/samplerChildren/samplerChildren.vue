@@ -35,20 +35,11 @@
     <el-table-column label="添加时间" prop="add_time"></el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
+        <editJsonExtract ref="jsonExtractRef"/>
+        <editAfterBeanShell ref="afterBeanShellRef"/>
+        <editPreBeanShell ref="preBeanShellRef"/>
         <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <editHeader v-if="scope.row.child_type==='header'" :childId="scope.row.id" :sampId="sampId"/>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <editRspAssert v-if="scope.row.child_type==='rsp_assert'" :childId="scope.row.id" :sampId="sampId"/>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <editJsonExtract v-if="scope.row.child_type==='json_extract'" :childId="scope.row.id" :sampId="sampId"/>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <editPreBeanShell v-if="scope.row.child_type==='pre_beanshell'" :childId="scope.row.id" :sampId="sampId"/>
-        </el-tooltip>
-        <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <editAfterBeanShell v-if="scope.row.child_type==='after_beanshell'" :childId="scope.row.id" :sampId="sampId"/>
+          <el-button type="primary" @click.native="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
         </el-tooltip>
       </template>
     </el-table-column>
@@ -57,8 +48,8 @@
 
 <script>
 
-import editHeader from './editHeader'
-import editRspAssert from './editRspAssert'
+// import editHeader from './editHeader'
+// import editRspAssert from './editRspAssert'
 import editJsonExtract from './editJsonExtract'
 import editPreBeanShell from './editPreBeanShell'
 import editAfterBeanShell from './editAfterBeanShell'
@@ -70,13 +61,14 @@ export default {
       childrenList: []
     }
   },
+  // props中为父组件传递过来的参数名称
   props: ['samplerId'],
   created() {
     this.getSamplerChildren()
   },
   components: {
-    editHeader,
-    editRspAssert,
+    // editHeader,
+    // editRspAssert,
     editJsonExtract,
     editPreBeanShell,
     editAfterBeanShell
@@ -89,6 +81,15 @@ export default {
         return this.$message.error('获取列表失败')
       }
       this.childrenList = childrenRes.data
+    },
+    modifyChild(samplerId, childId, childType) {
+      if (childType === 'json_extract') {
+        this.$refs.jsonExtractRef.initForm(samplerId, childId)
+      } else if (childType === 'after_beanshell') {
+        this.$refs.afterBeanShellRef.initForm(samplerId, childId)
+      } else if (childType === 'pre_beanshell') {
+        this.$refs.preBeanShellRef.initForm(samplerId, childId)
+      }
     }
   }
 }

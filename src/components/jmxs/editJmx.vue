@@ -8,6 +8,13 @@
       <el-breadcrumb-item>编辑JMX</el-breadcrumb-item>
     </el-breadcrumb>
 
+    <el-dialog :visible.sync="vi" title="JSON提取器">
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small">取 消</el-button>
+        <el-button type="primary" size="small">确 定</el-button>
+      </span>
+    </el-dialog>
+
     <!-- 卡片视图区 -->
     <el-card class="box-card">
       <!-- 搜索与添加区域 -->
@@ -62,6 +69,17 @@
             <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
               <editSampler v-if="scope.row.child_type==='sampler'" :samplerId="scope.row.id"/>
             </el-tooltip>
+            <el-dropdown style="margin-left: 10px" @command="addChild">
+              <el-button type="primary" class="myicon" size="small" icon="el-icon-set-up" circle/>
+              <editJsonExtract ref="jsonExtractRef"/>
+              <editAfterBeanShell ref="afterBeanShellRef"/>
+              <editPreBeanShell ref="preBeanShellRef"/>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'json_extract'}">添加JSON提取器</el-dropdown-item>
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'after_beanshell'}">添加后置BeanShell</el-dropdown-item>
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'pre_beanshell'}">添加前置BeanShell</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -75,6 +93,9 @@ import createSampler from './createSampler'
 import uploadCsv from './uploadCsv'
 import editSampler from './editSampler'
 import samplerChildren from './samplerChildren/samplerChildren'
+import editJsonExtract from './samplerChildren/editJsonExtract'
+import editAfterBeanShell from './samplerChildren/editAfterBeanShell'
+import editPreBeanShell from './samplerChildren/editPreBeanShell'
 
 export default {
   data() {
@@ -110,14 +131,18 @@ export default {
         child_thread: 'thread',
         child_type: 'sampler'
       },
-      childrenList: []
+      childrenList: [],
+      vi: false
     }
   },
   components: {
     createSampler,
     uploadCsv,
     editSampler,
-    samplerChildren
+    samplerChildren,
+    editJsonExtract,
+    editAfterBeanShell,
+    editPreBeanShell
   },
   // 页面加载前调用
   created() {
@@ -150,6 +175,17 @@ export default {
       // 在只展开一个后，当rowList为0就是收起，为0时就可以不发起请求
       if (rowList.length) {
         this.isEx = true
+      }
+    },
+    addChild(command) {
+      const childType = command.childType
+      const samplerId = command.samplerId
+      if (childType === 'json_extract') {
+        this.$refs.jsonExtractRef.initForm(samplerId)
+      } else if (childType === 'after_beanshell') {
+        this.$refs.afterBeanShellRef.initForm(samplerId)
+      } else if (childType === 'pre_beanshell') {
+        this.$refs.preBeanShellRef.initForm(samplerId)
       }
     }
   }

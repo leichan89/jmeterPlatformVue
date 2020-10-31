@@ -9,8 +9,8 @@ import './assets/fonts/iconfont.css'
 
 import axios from 'axios'
 // 配置请求的根路径
-// axios.defaults.baseURL = 'http://127.0.0.1:8000'
-axios.defaults.baseURL = 'http://192.168.62.131:8000'
+axios.defaults.baseURL = 'http://127.0.0.1:8000'
+// axios.defaults.baseURL = 'http://192.168.62.131:8000'
 axios.interceptors.request.use(config => {
   console.log(config)
   config.headers.Authorization = window.sessionStorage.getItem('token')

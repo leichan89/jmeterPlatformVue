@@ -1,6 +1,5 @@
 <template>
-  <span style="margin-left: 10px">
-    <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle/>
+  <span>
     <el-dialog title="BeanShell后置处理器" :visible.sync="afterBeanShellVisible" width="30%">
       <el-form ref="afterBeanShellFormDataRef" :model="afterBeanShellFormData" status-icon size="small" label-width="80px" :rules="afterBeanShellFormRules">
         <el-form-item label="名称" prop="name">
@@ -44,21 +43,22 @@ export default {
       }
     }
   },
-  props: ['sampId', 'childId'],
   methods: {
-    initForm() {
+    initForm(samplerId, childId = '') {
+      this.afterBeanShellFormData.samplerId = samplerId
       this.afterBeanShellVisible = true
       setTimeout(() => {
         this.$refs.afterBeanShellFormDataRef.resetFields()
       })
-      if (this.childId) {
+      if (childId !== '') {
         setTimeout(() => {
+          this.afterBeanShellFormData.childId = childId
           this.getAfterBeanShellInfo()
         }, 10)
       }
     },
     async getAfterBeanShellInfo() {
-      const { data: afterBeanShellRes } = await this.$http.get(`/samplers/child/${this.childId}`)
+      const { data: afterBeanShellRes } = await this.$http.get(`/samplers/child/${this.afterBeanShellFormData.childId}`)
       if (afterBeanShellRes.code !== 200) {
         return this.$message.error('获取BeanShell后置处理器信息失败')
       }
@@ -70,8 +70,6 @@ export default {
     submit() {
       this.$refs.afterBeanShellFormDataRef.validate(async valid => {
         if (!valid) return
-        this.afterBeanShellFormData.samplerId = this.sampId
-        this.afterBeanShellFormData.childId = this.childId
         const { data: createAfterBeanShellRes } = await this.$http.post('/samplers/beanshell/create_update_after', this.afterBeanShellFormData)
         if (createAfterBeanShellRes.code !== 200) {
           return this.$message.error('创建或者修改BeanShell后置处理器失败')

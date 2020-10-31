@@ -1,6 +1,6 @@
 <template>
-  <span style="margin-left: 10px">
-    <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle/>
+  <span>
+    <!-- append-to-body解决从下拉菜单打开时被大遮罩挡住的问题，但是后面又没有加了 -->
     <el-dialog title="JSON提取器" :visible.sync="jsonExtractVisible" width="30%">
       <el-form ref="jsonExtractFormDataRef" :model="jsonExtractFormData" status-icon size="small" label-width="80px" :rules="jsonExtractFormRules">
         <el-form-item label="名称" prop="name">
@@ -51,21 +51,22 @@ export default {
       }
     }
   },
-  props: ['sampId', 'childId'],
   methods: {
-    initForm() {
+    initForm(samplerId, childId = '') {
+      this.jsonExtractFormData.samplerId = samplerId
       this.jsonExtractVisible = true
       setTimeout(() => {
         this.$refs.jsonExtractFormDataRef.resetFields()
       })
-      if (this.childId) {
+      if (childId !== '') {
         setTimeout(() => {
+          this.jsonExtractFormData.childId = childId
           this.getJsonExtractInfo()
         }, 10)
       }
     },
     async getJsonExtractInfo() {
-      const { data: jsonExtractRes } = await this.$http.get(`/samplers/child/${this.childId}`)
+      const { data: jsonExtractRes } = await this.$http.get(`/samplers/child/${this.jsonExtractFormData.childId}`)
       if (jsonExtractRes.code !== 200) {
         return this.$message.error('获取JSON提取器信息失败')
       }
@@ -78,8 +79,6 @@ export default {
     submit() {
       this.$refs.jsonExtractFormDataRef.validate(async valid => {
         if (!valid) return
-        this.jsonExtractFormData.samplerId = this.sampId
-        this.jsonExtractFormData.childId = this.childId
         const { data: createJsonExtractRes } = await this.$http.post('/samplers/extract/create_update_json', this.jsonExtractFormData)
         if (createJsonExtractRes.code !== 200) {
           return this.$message.error('创建或者修改JSON提取器失败')

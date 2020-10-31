@@ -1,6 +1,5 @@
 <template>
-  <span style="margin-left: 10px">
-    <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle/>
+  <span>
     <el-dialog title="BeanShell前置处理器" :visible.sync="preBeanShellVisible" width="30%">
       <el-form ref="preBeanShellFormDataRef" :model="preBeanShellFormData" status-icon size="small" label-width="80px" :rules="preBeanShellFormRules">
         <el-form-item label="名称" prop="name">
@@ -44,21 +43,22 @@ export default {
       }
     }
   },
-  props: ['sampId', 'childId'],
   methods: {
-    initForm() {
+    initForm(samplerId, childId = '') {
+      this.preBeanShellFormData.samplerId = samplerId
       this.preBeanShellVisible = true
       setTimeout(() => {
         this.$refs.preBeanShellFormDataRef.resetFields()
       })
-      if (this.childId) {
+      if (childId !== '') {
         setTimeout(() => {
+          this.preBeanShellFormData.childId = childId
           this.getPreBeanShellInfo()
         }, 10)
       }
     },
     async getPreBeanShellInfo() {
-      const { data: preBeanShellRes } = await this.$http.get(`/samplers/child/${this.childId}`)
+      const { data: preBeanShellRes } = await this.$http.get(`/samplers/child/${this.preBeanShellFormData.childId}`)
       if (preBeanShellRes.code !== 200) {
         return this.$message.error('获取BeanShell前置处理器信息失败')
       }
@@ -70,8 +70,6 @@ export default {
     submit() {
       this.$refs.preBeanShellFormDataRef.validate(async valid => {
         if (!valid) return
-        this.preBeanShellFormData.samplerId = this.sampId
-        this.preBeanShellFormData.childId = this.childId
         const { data: createPreBeanShellRes } = await this.$http.post('/samplers/beanshell/create_update_pre', this.preBeanShellFormData)
         if (createPreBeanShellRes.code !== 200) {
           return this.$message.error('创建或者修改BeanShell前置处理器失败')
