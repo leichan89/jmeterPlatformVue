@@ -39,7 +39,7 @@
         <editAfterBeanShell ref="afterBeanShellRef"/>
         <editPreBeanShell ref="preBeanShellRef"/>
         <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-          <el-button type="primary" @click.native="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
+          <el-button type="primary" @click="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
         </el-tooltip>
       </template>
     </el-table-column>
