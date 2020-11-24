@@ -2,7 +2,7 @@
   <div>
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm" size="small">新建请求</el-button>
-    <el-dialog title="创建请求" :visible.sync="createSamplerDialogVisible" width="50%">
+    <el-dialog title="创建请求" :visible.sync="createSamplerDialogVisible" width="46%">
       <el-form ref="createSamplerFormRef" :model="createSamplerForm" :rules="createSamplerFormRules" label-width="80px">
         <el-form-item label="线程类型">
           <el-select v-model="createSamplerForm.threadType" size="small" style="width:180px">

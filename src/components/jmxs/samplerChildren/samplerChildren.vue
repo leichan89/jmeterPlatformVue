@@ -35,6 +35,8 @@
     <el-table-column label="添加时间" prop="add_time"></el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
+        <editHeader ref="headerRef"/>
+        <editRspAssert ref="rspAssertRef"/>
         <editJsonExtract ref="jsonExtractRef"/>
         <editAfterBeanShell ref="afterBeanShellRef"/>
         <editPreBeanShell ref="preBeanShellRef"/>
@@ -48,8 +50,8 @@
 
 <script>
 
-// import editHeader from './editHeader'
-// import editRspAssert from './editRspAssert'
+import editHeader from './editHeader'
+import editRspAssert from './editRspAssert'
 import editJsonExtract from './editJsonExtract'
 import editPreBeanShell from './editPreBeanShell'
 import editAfterBeanShell from './editAfterBeanShell'
@@ -67,8 +69,8 @@ export default {
     this.getSamplerChildren()
   },
   components: {
-    // editHeader,
-    // editRspAssert,
+    editHeader,
+    editRspAssert,
     editJsonExtract,
     editPreBeanShell,
     editAfterBeanShell
@@ -89,6 +91,10 @@ export default {
         this.$refs.afterBeanShellRef.initForm(samplerId, childId)
       } else if (childType === 'pre_beanshell') {
         this.$refs.preBeanShellRef.initForm(samplerId, childId)
+      } else if (childType === 'header') {
+        this.$refs.headerRef.initForm(samplerId, childId)
+      } else if (childType === 'rsp_assert') {
+        this.$refs.rspAssertRef.initForm(samplerId, childId)
       }
     }
   }

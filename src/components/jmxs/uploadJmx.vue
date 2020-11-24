@@ -6,7 +6,7 @@
     <el-dialog title="上传JMX文件" :visible.sync="uploadFormVisible" width="30%">
       <el-form ref="uploadFormRef" :model="uploadForm" :rules="uploadFormRules" label-width="80px" class="demo-ruleForm">
         <el-form-item label="文件名称" prop="jmxName">
-          <el-input v-model="uploadForm.jmxName" size="small" placeholder="请输入jmx文件别名"/>
+          <el-input v-model="uploadForm.jmxName" size="small" placeholder="请输入jmx文件别名" style="width:100%"/>
         </el-form-item>
         <!-- action必填，不然会告警 -->
         <el-form-item label="选择文件" prop="fileList">

@@ -1,9 +1,11 @@
 <template>
   <span style="margin-left: 10px">
-    <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
-    <el-dialog title="修响应断言" :visible.sync="eidtRspAssertDialogVisible" width="40%">
-      <el-form ref="rspAssertParamFormDataRef" :model="rspAssertParamFormData" status-icon style="width:100%">
-        <el-form-item>
+    <el-dialog title="响应断言" :visible.sync="eidtRspAssertDialogVisible" width="46%">
+      <el-form ref="rspAssertParamFormDataRef" :model="rspAssertParamFormData" status-icon label-width="80px" :rules="rspAssertParamFormRules">
+        <el-form-item label="名称" prop="name" style="margin-bottom: 10px">
+          <el-input v-model="rspAssertParamFormData.name" placeholder="请输入响应断言名称" size="small"/>
+        </el-form-item>
+        <el-form-item label="断言">
           <el-row>
             <el-col :span="11">
               <el-radio-group v-model="radio" @change="toChangeRadio(radio)" size="small">
@@ -13,10 +15,10 @@
                 <el-radio-button label="字符串"/>
               </el-radio-group>
             </el-col>
-            <el-col :span="3" style="margin-top: 2px">
+            <el-col :span="3" style="margin-top: 1px">
               <el-checkbox v-model="checkedFalse" @change="toChangeFalse" label="否" border size="small"/>
             </el-col>
-            <el-col :span="5" style="margin-top: 2px">
+            <el-col :span="5" style="margin-top: 1px">
               <el-checkbox v-model="checkedOr" @change="toChangeOr" label="或者" border size="small"/>
             </el-col>
           </el-row>
@@ -50,6 +52,7 @@ export default {
       rspAssertParamFormData: {
         samplerId: '',
         childId: '',
+        name: '',
         assertContent: [
           { key: '' }
         ],
@@ -59,19 +62,28 @@ export default {
       },
       radio: '字符串',
       checkedFalse: false,
-      checkedOr: false
+      checkedOr: false,
+      // 校验必填参数
+      rspAssertParamFormRules: {
+        name: [
+          { required: true, message: '请输入响应断言名称', trigger: 'blur' }
+        ]
+      }
     }
   },
-  props: ['sampId', 'childId'],
   methods: {
-    initForm() {
+    initForm(samplerId, childId = '') {
+      this.rspAssertParamFormData.samplerId = samplerId
       this.eidtRspAssertDialogVisible = true
       setTimeout(() => {
         this.$refs.rspAssertParamFormDataRef.resetFields()
       })
-      setTimeout(() => {
-        this.getRspAssertInfo()
-      }, 10)
+      if (childId !== '') {
+        setTimeout(() => {
+          this.rspAssertParamFormData.childId = childId
+          this.getRspAssertInfo()
+        }, 10)
+      }
     },
     // 表单增减操作
     paramListMethod(n) {
@@ -108,11 +120,12 @@ export default {
       }
     },
     async getRspAssertInfo() {
-      const { data: rspAssertInfoRes } = await this.$http.get(`samplers/child/${this.childId}`)
+      const { data: rspAssertInfoRes } = await this.$http.get(`samplers/child/${this.rspAssertParamFormData.childId}`)
       if (rspAssertInfoRes.code !== 200) {
         return this.$message.error('获取响应断言信息失败')
       }
       const childInfo = JSON.parse(rspAssertInfoRes.data.child_info)
+      this.rspAssertParamFormData.name = rspAssertInfoRes.data.child_name
       this.rspAssertParamFormData.assertContent = childInfo.params.rsp_assert_content
       this.rspAssertParamFormData.radioStr = childInfo.params.rsp_assert_type[0]
       this.rspAssertParamFormData.checkedFalseStr = childInfo.params.rsp_assert_type[1]
@@ -121,8 +134,6 @@ export default {
     submit() {
       this.$refs.rspAssertParamFormDataRef.validate(async valid => {
         if (!valid) return
-        this.rspAssertParamFormData.samplerId = this.sampId
-        this.rspAssertParamFormData.childId = this.childId
         const { data: createRspAssertRes } = await this.$http.post('/samplers/assert/create_update_rsp', this.rspAssertParamFormData)
         if (createRspAssertRes.code !== 200) {
           return this.$message.error('修改响应断言失败')

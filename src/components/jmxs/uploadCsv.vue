@@ -6,7 +6,7 @@
     <el-dialog title="上传CSV" :visible.sync="uploadFormVisible" width="25%">
       <el-form ref="uploadFormRef" :model="uploadForm" :rules="uploadFormRules" label-width="80px" class="demo-ruleForm">
         <el-form-item label="线程类型">
-          <el-select v-model="uploadForm.threadType" size="small" style="width:180px">
+          <el-select v-model="uploadForm.threadType" size="small" style="width:100%">
             <el-option
               v-for="item in threadTypeOptions"
               :key="item.value"
@@ -16,10 +16,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="变量名称" prop="variableNames">
-          <el-input v-model="uploadForm.variableNames" size="small" placeholder="多个变量以英文逗号隔开" style="width:180px"/>
+          <el-input v-model="uploadForm.variableNames" size="small" placeholder="多个变量以英文逗号隔开" style="width:100%"/>
         </el-form-item>
         <el-form-item label="分隔符号" prop="delimiter">
-          <el-input v-model="uploadForm.delimiter" size="small" placeholder="请输入分隔符" style="width:180px"/>
+          <el-input v-model="uploadForm.delimiter" size="small" placeholder="请输入分隔符" style="width:100%"/>
         </el-form-item>
         <el-form-item label="其他设置">
           <div>

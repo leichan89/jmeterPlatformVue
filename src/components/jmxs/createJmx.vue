@@ -5,19 +5,19 @@
     <el-dialog title="快速创建JMX" :visible.sync="createJmxDialogVisible" width="46%">
       <el-form ref="createJmxFormRef" :model="createJmxForm" :rules="createJmxFormRules" label-width="80px">
         <el-form-item label="文件名称" prop="jmxName">
-          <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"></el-input>
+          <el-input v-model="createJmxForm.jmxName" placeholder="请输入jmx文件名称" size="small"/>
         </el-form-item>
         <el-form-item label="请求名称" prop="samplerName">
-          <el-input v-model="createJmxForm.samplerName" placeholder="请输入接口名称" size="small"></el-input>
+          <el-input v-model="createJmxForm.samplerName" placeholder="请输入接口名称" size="small"/>
         </el-form-item>
         <el-form-item label="请求地址" prop="url">
           <div style="margin-bottom: 5px"/>
           <el-input placeholder="请输入接口地址" v-model="createJmxForm.url" size="small">
             <el-select v-model="createJmxForm.method" slot="prepend" placeholder="请选择">
-              <el-option label="GET" value="GET"></el-option>
-              <el-option label="POST" value="POST"></el-option>
-              <el-option label="PUT" value="PUT"></el-option>
-              <el-option label="DELETE" value="DELETE"></el-option>
+              <el-option label="GET" value="GET"/>
+              <el-option label="POST" value="POST"/>
+              <el-option label="PUT" value="PUT"/>
+              <el-option label="DELETE" value="DELETE"/>
             </el-select>
           </el-input>
           <!--设置与下行信息的间距-->
@@ -32,8 +32,8 @@
           <div style="margin-bottom: 7px">
             <!-- 切换tab的时候，修改paramType的值，radio的值要和label的值相等 -->
             <el-radio-group v-model="radio" @change="tabChange(radio)" size="small">
-              <el-radio-button label="form类型"></el-radio-button>
-              <el-radio-button label="raw类型"></el-radio-button>
+              <el-radio-button label="form类型"/>
+              <el-radio-button label="raw类型"/>
             </el-radio-group>
           </div>
           <!--根据选择判断是显示json还是显示raw-->

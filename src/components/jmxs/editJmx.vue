@@ -71,10 +71,14 @@
             </el-tooltip>
             <el-dropdown style="margin-left: 10px" @command="addChild">
               <el-button type="primary" class="myicon" size="small" icon="el-icon-set-up" circle/>
+              <editHeader ref="headerRef"/>
+              <editRspAssert ref="rspAssertRef"/>
               <editJsonExtract ref="jsonExtractRef"/>
               <editAfterBeanShell ref="afterBeanShellRef"/>
               <editPreBeanShell ref="preBeanShellRef"/>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'header'}">添加请求头</el-dropdown-item>
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'rsp_assert'}">添加响应断言</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'json_extract'}">添加JSON提取器</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'after_beanshell'}">添加后置BeanShell</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'pre_beanshell'}">添加前置BeanShell</el-dropdown-item>
@@ -93,6 +97,8 @@ import createSampler from './createSampler'
 import uploadCsv from './uploadCsv'
 import editSampler from './editSampler'
 import samplerChildren from './samplerChildren/samplerChildren'
+import editHeader from './samplerChildren/editHeader'
+import editRspAssert from './samplerChildren/editRspAssert'
 import editJsonExtract from './samplerChildren/editJsonExtract'
 import editAfterBeanShell from './samplerChildren/editAfterBeanShell'
 import editPreBeanShell from './samplerChildren/editPreBeanShell'
@@ -140,6 +146,8 @@ export default {
     uploadCsv,
     editSampler,
     samplerChildren,
+    editHeader,
+    editRspAssert,
     editJsonExtract,
     editAfterBeanShell,
     editPreBeanShell
@@ -186,6 +194,10 @@ export default {
         this.$refs.afterBeanShellRef.initForm(samplerId)
       } else if (childType === 'pre_beanshell') {
         this.$refs.preBeanShellRef.initForm(samplerId)
+      } else if (childType === 'header') {
+        this.$refs.headerRef.initForm(samplerId)
+      } else if (childType === 'rsp_assert') {
+        this.$refs.rspAssertRef.initForm(samplerId)
       }
     }
   }
