@@ -13,7 +13,7 @@
             <el-input placeholder="请输入value" v-model="item.value" auto-complete="off"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="1">
+        <el-col :span=".5">
           <i class="iconBtn" @click="paramListMethod(index)" :class="{'el-icon-circle-plus-outline': index == 0,'el-icon-remove-outline': index>0}"></i>
         </el-col>
       </el-row>

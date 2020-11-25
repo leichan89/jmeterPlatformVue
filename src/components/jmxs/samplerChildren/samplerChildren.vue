@@ -1,8 +1,8 @@
 <template>
   <!-- 用户列表区 -->
   <el-table :data="childrenList" border stripe style="margin-top: -21px;margin-left: -3px; margin-bottom: -21px">
-    <el-table-column label="id" prop="id"></el-table-column>
-    <el-table-column label="子元素名称" prop="child_name"></el-table-column>
+    <el-table-column label="id" prop="id"/>
+    <el-table-column label="子元素名称" prop="child_name"/>
     <el-table-column label="子元素类型" prop="child_type">
       <template slot-scope="scope">
         <span v-if="scope.row.child_type==='header'">
@@ -35,13 +35,16 @@
     <el-table-column label="添加时间" prop="add_time"></el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <editHeader ref="headerRef"/>
-        <editRspAssert ref="rspAssertRef"/>
-        <editJsonExtract ref="jsonExtractRef"/>
-        <editAfterBeanShell ref="afterBeanShellRef"/>
-        <editPreBeanShell ref="preBeanShellRef"/>
+        <editHeader ref="headerRef" @fatherFn="getSamplerChildren"/>
+        <editRspAssert ref="rspAssertRef" @fatherFn="getSamplerChildren"/>
+        <editJsonExtract ref="jsonExtractRef" @fatherFn="getSamplerChildren"/>
+        <editAfterBeanShell ref="afterBeanShellRef" @fatherFn="getSamplerChildren"/>
+        <editPreBeanShell ref="preBeanShellRef" @fatherFn="getSamplerChildren"/>
         <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
           <el-button type="primary" @click="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+          <el-button type="danger" @click="deleteChild(sampId, scope.row.id)" size="small" class="myicon" icon="el-icon-delete" circle/>
         </el-tooltip>
       </template>
     </el-table-column>
@@ -96,6 +99,15 @@ export default {
       } else if (childType === 'rsp_assert') {
         this.$refs.rspAssertRef.initForm(samplerId, childId)
       }
+    },
+    async deleteChild(samplerId, childId) {
+      const { data: deleteRes } = await this.$http.post(`/samplers/delete/${samplerId}/${childId}`)
+      if (deleteRes.code !== 200) {
+        return this.$message.error('删除子元素失败')
+      }
+      // 重新加载子元素列表
+      this.getSamplerChildren()
+      return this.$message.success('删除子元素成功')
     }
   }
 }

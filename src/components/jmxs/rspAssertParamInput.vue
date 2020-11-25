@@ -25,7 +25,7 @@
             <el-input type="textarea" :rows="1" placeholder="请输入断言信息" v-model="item.key" auto-complete="off"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="1">
+        <el-col :span=".5">
           <i class="iconBtn" @click="paramListMethod(index)" :class="{'el-icon-circle-plus-outline': index == 0,'el-icon-remove-outline': index>0}"></i>
         </el-col>
       </el-row>

@@ -128,8 +128,27 @@ export default {
       this.rspAssertParamFormData.name = rspAssertInfoRes.data.child_name
       this.rspAssertParamFormData.assertContent = childInfo.params.rsp_assert_content
       this.rspAssertParamFormData.radioStr = childInfo.params.rsp_assert_type[0]
+      if (this.rspAssertParamFormData.radioStr === 'A') {
+        this.radio = '包括'
+      } else if (this.rspAssertParamFormData.radioStr === 'B') {
+        this.radio = '匹配'
+      } else if (this.rspAssertParamFormData.radioStr === 'C') {
+        this.radio = '相等'
+      } else if (this.rspAssertParamFormData.radioStr === 'D') {
+        this.radio = '字符串'
+      }
       this.rspAssertParamFormData.checkedFalseStr = childInfo.params.rsp_assert_type[1]
+      if (this.rspAssertParamFormData.checkedFalseStr === 'E') {
+        this.checkedFalse = true
+      } else {
+        this.checkedFalse = false
+      }
       this.rspAssertParamFormData.checkedOrStr = childInfo.params.rsp_assert_type[2]
+      if (this.rspAssertParamFormData.checkedOrStr === 'F') {
+        this.checkedOr = true
+      } else {
+        this.checkedOr = false
+      }
     },
     submit() {
       this.$refs.rspAssertParamFormDataRef.validate(async valid => {
@@ -139,6 +158,7 @@ export default {
           return this.$message.error('修改响应断言失败')
         }
         this.eidtRspAssertDialogVisible = false
+        this.$emit('fatherFn')
         return this.$message.success('修改响应断言成功')
       })
     }

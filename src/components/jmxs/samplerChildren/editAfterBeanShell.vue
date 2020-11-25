@@ -75,6 +75,7 @@ export default {
           return this.$message.error('创建或者修改BeanShell后置处理器失败')
         }
         this.afterBeanShellVisible = false
+        this.$emit('fatherFn')
         return this.$message.success('创建或者修改BeanShell后置处理器成功')
       })
     }

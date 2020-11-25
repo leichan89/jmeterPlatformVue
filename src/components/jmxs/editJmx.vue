@@ -70,7 +70,7 @@
               <editSampler v-if="scope.row.child_type==='sampler'" :samplerId="scope.row.id"/>
             </el-tooltip>
             <el-dropdown style="margin-left: 10px" @command="addChild">
-              <el-button type="primary" class="myicon" size="small" icon="el-icon-set-up" circle/>
+              <el-button type="info" class="myicon" size="small" icon="el-icon-set-up" circle/>
               <editHeader ref="headerRef"/>
               <editRspAssert ref="rspAssertRef"/>
               <editJsonExtract ref="jsonExtractRef"/>

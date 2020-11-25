@@ -93,6 +93,7 @@ export default {
           return this.$message.error('修改请求头失败')
         }
         this.eidtHeaderDialogVisible = false
+        this.$emit('fatherFn')
         return this.$message.success('修改请求头成功')
       })
     }

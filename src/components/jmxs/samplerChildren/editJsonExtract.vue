@@ -84,6 +84,7 @@ export default {
           return this.$message.error('创建或者修改JSON提取器失败')
         }
         this.jsonExtractVisible = false
+        this.$emit('fatherFn')
         return this.$message.success('创建或者修改JSON提取器成功')
       })
     }
