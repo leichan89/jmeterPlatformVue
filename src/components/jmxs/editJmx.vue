@@ -69,8 +69,8 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-              <editSampler v-if="scope.row.child_type === 'sampler'" :samplerId="scope.row.id"/>
-              <editCsv v-if="scope.row.child_type === 'csv'" :csvId="scope.row.id"/>
+              <editSampler v-if="scope.row.child_type === 'sampler'" :samplerId="scope.row.id" @fatherFunc="getThreadGroupChildren"/>
+              <editCsv v-if="scope.row.child_type === 'csv'" :csvId="scope.row.id" @fatherFunc="getThreadGroupChildren"/>
             </el-tooltip>
             <!-- 是sampler才需要有创建的按钮 -->
             <el-dropdown style="margin-left: 10px" @command="addChild" v-if="scope.row.child_type === 'sampler'">

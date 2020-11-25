@@ -139,6 +139,8 @@ export default {
         if (createSamplerRes.code !== 200) {
           return this.$message.error('修改请求失败')
         }
+        // 修改完成后刷新列表
+        this.$emit('fatherFunc')
         this.editSamplerDialogVisible = false
         return this.$message.success('修改成功')
       })
