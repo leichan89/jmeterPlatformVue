@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm" size="small">添加CSV</el-button>
     <!-- 上传文件对话框 -->
@@ -14,6 +14,9 @@
               :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="CSV名称" prop="name">
+          <el-input v-model="uploadForm.name" size="small" placeholder="CSV名称" style="width:100%"/>
         </el-form-item>
         <el-form-item label="变量名称" prop="variableNames">
           <el-input v-model="uploadForm.variableNames" size="small" placeholder="多个变量以英文逗号隔开" style="width:100%"/>
@@ -53,7 +56,7 @@
         <el-button size="small" type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
-  </div>
+  </span>
 </template>
 <script>
 
@@ -79,6 +82,8 @@ export default {
       uploadForm: {
         // 线程组类型
         threadType: 'thread',
+        // CSV名称
+        name: '',
         // 变量名称
         variableNames: '',
         // 是否忽略首行
@@ -91,8 +96,11 @@ export default {
       },
       // 校验必填参数，上传fileList校验添加后会报错，最好不添加
       uploadFormRules: {
+        name: [
+          { required: true, message: '请输入CSV名称', trigger: 'blur' }
+        ],
         variableNames: [
-          { required: true, message: '请输入CSV文件别名', trigger: 'blur' }
+          { required: true, message: '请输入变量名称', trigger: 'blur' }
         ],
         delimiter: [
           { required: true, message: '请输入分割符号', trigger: 'blur' }
@@ -130,6 +138,8 @@ export default {
       if (res.code !== 200) {
         return this.$message.error('上传失败')
       }
+      // 刷新jmx子元素列表
+      this.$emit('fatherFunc')
       return this.$message.success('上传成功')
     },
     // 上传文件的提交操作，先上传，再关闭对话框
@@ -137,7 +147,6 @@ export default {
       this.$refs.uploadFormRef.validate(valid => {
         if (!valid) return
         this.$refs.upload.submit()
-        this.$emit('fatherFunc')
         this.uploadFormVisible = false
       })
     }

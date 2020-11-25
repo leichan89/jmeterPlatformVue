@@ -144,7 +144,7 @@ export default {
         this.createSamplerForm.paramType = 'raw'
       }
     },
-    // 点击确定时，创建jmx，创建完成后再创建jmx的header
+    // 创建sampler
     submit() {
       this.$refs.createSamplerFormRef.validate(async valid => {
         // 校验填写的参数，如果校验失败，则标红提示
@@ -175,6 +175,7 @@ export default {
           }
         }
         this.createSamplerDialogVisible = false
+        // 创建sampler完成后，刷新列表
         this.$emit('fatherFunc')
         return this.$message.success('创建成功')
       })

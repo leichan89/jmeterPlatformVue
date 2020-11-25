@@ -49,27 +49,31 @@
           <uploadCsv @fatherFunc="getThreadGroupChildren"/>
         </el-col>
       </el-row>
-      <!-- 用户列表区 -->
+      <!-- 用户列表区，可以展开单行 -->
       <el-table :data="childrenList"
                 border
                 stripe
                 @expand-change="exChange"
                 :row-key='getRowKeys'
                 :expand-row-keys="expands">
+        <!-- 展开行按钮 -->
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <samplerChildren v-if="isEx" :samplerId="scope.row.id"/>
+            <!-- 是sampler才需要展开 -->
+            <samplerChildren v-if="isEx && scope.row.child_type === 'sampler'" :samplerId="scope.row.id"/>
           </template>
         </el-table-column>
-        <el-table-column label="id" prop="id"></el-table-column>
-        <el-table-column label="线程组子元素名称" prop="child_name"></el-table-column>
-        <el-table-column label="创建时间" prop="add_time"></el-table-column>
+        <el-table-column label="id" prop="id"/>
+        <el-table-column label="线程组子元素名称" prop="child_name"/>
+        <el-table-column label="创建时间" prop="add_time"/>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
-              <editSampler v-if="scope.row.child_type==='sampler'" :samplerId="scope.row.id"/>
+              <editSampler v-if="scope.row.child_type === 'sampler'" :samplerId="scope.row.id"/>
+              <editCsv v-if="scope.row.child_type === 'csv'" :csvId="scope.row.id"/>
             </el-tooltip>
-            <el-dropdown style="margin-left: 10px" @command="addChild">
+            <!-- 是sampler才需要有创建的按钮 -->
+            <el-dropdown style="margin-left: 10px" @command="addChild" v-if="scope.row.child_type === 'sampler'">
               <el-button type="info" class="myicon" size="small" icon="el-icon-set-up" circle/>
               <editHeader ref="headerRef"/>
               <editRspAssert ref="rspAssertRef"/>
@@ -84,6 +88,9 @@
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'pre_beanshell'}">添加前置BeanShell</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
+            <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+              <el-button type="danger" @click="deleteChild(scope.row.id)" size="small" class="myicon" icon="el-icon-delete" circle/>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -102,6 +109,7 @@ import editRspAssert from './samplerChildren/editRspAssert'
 import editJsonExtract from './samplerChildren/editJsonExtract'
 import editAfterBeanShell from './samplerChildren/editAfterBeanShell'
 import editPreBeanShell from './samplerChildren/editPreBeanShell'
+import editCsv from './editCsv'
 
 export default {
   data() {
@@ -144,6 +152,7 @@ export default {
   components: {
     createSampler,
     uploadCsv,
+    editCsv,
     editSampler,
     samplerChildren,
     editHeader,
@@ -199,6 +208,14 @@ export default {
       } else if (childType === 'rsp_assert') {
         this.$refs.rspAssertRef.initForm(samplerId)
       }
+    },
+    async deleteChild(childId) {
+      const { data: deleteRes } = await this.$http.post(`/jmxs/child/delete/${childId}`)
+      if (deleteRes.code !== 200) {
+        return this.$message.error('删除失败')
+      }
+      this.getThreadGroupChildren()
+      return this.$message.success('删除成功')
     }
   }
 }

@@ -24,7 +24,7 @@
           <createJmx @fatherFunc="getJmxsList"/>
         </el-col>
         <el-col :span="2">
-          <uploadJmx/>
+          <uploadJmx @fatherFunc="getJmxsList"/>
         </el-col>
       </el-row>
 
