@@ -11,10 +11,10 @@
           <div style="margin-bottom: 5px"/>
           <el-input placeholder="请输入接口地址" v-model="createSamplerForm.url" size="small">
             <el-select v-model="createSamplerForm.method" slot="prepend" placeholder="请选择">
-              <el-option label="GET" value="GET"></el-option>
-              <el-option label="POST" value="POST"></el-option>
-              <el-option label="PUT" value="PUT"></el-option>
-              <el-option label="DELETE" value="DELETE"></el-option>
+              <el-option label="GET" value="GET"/>
+              <el-option label="POST" value="POST"/>
+              <el-option label="PUT" value="PUT"/>
+              <el-option label="DELETE" value="DELETE"/>
             </el-select>
           </el-input>
           <!--设置与下行信息的间距-->

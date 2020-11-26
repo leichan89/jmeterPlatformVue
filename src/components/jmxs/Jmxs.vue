@@ -30,23 +30,25 @@
 
       <!-- 用户列表区 -->
       <el-table :data="jmxsList" border stripe>
-        <el-table-column label="文件id" prop="id"></el-table-column>
-        <el-table-column label="JMX名称" prop="jmx_alias"></el-table-column>
-        <el-table-column label="创建人" prop="add_user.name"></el-table-column>
-        <!--<el-table-column label="上传时间" prop="add_time"></el-table-column>-->
+        <el-table-column label="JMX名称" prop="jmx_alias"/>
+        <el-table-column label="创建人" prop="add_user.name"/>
+        <el-table-column label="创建时间" prop="add_time"/>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
-              <el-button type="warning" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"></el-button>
-            </el-tooltip>
-            <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-              <el-button type="primary" class="myicon" size="small" icon="el-icon-edit" circle @click="editJmx(scope.row)"></el-button>
-            </el-tooltip>
             <el-tooltip effect="dark" content="运行" placement="top" :enterable="false">
-              <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"></el-button>
+              <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="修改线程组属性" placement="top" :enterable="false">
               <editThreadNum :jmxId="scope.row.id"/>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
+              <el-button type="warning" class="myicon" size="small" icon="el-icon-edit" circle @click="editJmx(scope.row)"/>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
+              <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"/>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+              <el-button type="danger" class="myicon" size="small" icon="el-icon-delete" circle @click="deleteJmx(scope.row.id)"/>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -196,6 +198,16 @@ export default {
           id: jmxInfo.id
         }
       })
+    },
+    // 删除JMX
+    async deleteJmx(jmxId) {
+      const { data: deleteRes } = await this.$http.post(`jmxs/delete/${jmxId}`)
+      if (deleteRes.code !== 200) {
+        return this.$message.error(deleteRes.msg)
+      }
+      // 刷新列表
+      this.getJmxsList()
+      return this.$message.success('删除成功！')
     }
   }
 }

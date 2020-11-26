@@ -32,7 +32,7 @@
         </span>
       </template>
     </el-table-column>
-    <el-table-column label="添加时间" prop="add_time"></el-table-column>
+    <el-table-column label="创建时间" prop="add_time"></el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
         <editHeader ref="headerRef" @fatherFn="getSamplerChildren"/>
