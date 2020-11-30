@@ -74,6 +74,7 @@ export default {
       if (res.code !== 200) {
         return this.$message.error('上传失败')
       }
+      this.$emit('fatherFunc')
       return this.$message.success('上传成功')
     },
     // 上传文件的提交操作，先上传，再关闭对话框
