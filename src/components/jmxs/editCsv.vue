@@ -84,21 +84,9 @@ export default {
       this.modifyCsvForm.childId = this.csvId
       this.modifyCsvForm.variableNames = childInfo.variableNames
       this.modifyCsvForm.delimiter = childInfo.delimiter
-      if (childInfo.ignoreFirstLine === 'true') {
-        this.modifyCsvForm.ignoreFirstLine = true
-      } else {
-        this.modifyCsvForm.ignoreFirstLine = false
-      }
-      if (childInfo.recycle === 'true') {
-        this.modifyCsvForm.recycle = true
-      } else {
-        this.modifyCsvForm.recycle = false
-      }
-      if (childInfo.stopThread === 'true') {
-        this.modifyCsvForm.stopThread = true
-      } else {
-        this.modifyCsvForm.stopThread = false
-      }
+      this.modifyCsvForm.ignoreFirstLine = childInfo.ignoreFirstLine
+      this.modifyCsvForm.recycle = childInfo.recycle
+      this.modifyCsvForm.stopThread = childInfo.stopThread
     },
     // 修改参数对话框
     submitForm() {
