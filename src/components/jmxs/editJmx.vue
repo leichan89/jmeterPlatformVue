@@ -77,12 +77,14 @@
               <el-button type="info" class="myicon" size="small" icon="el-icon-set-up" circle/>
               <editHeader ref="headerRef"/>
               <editRspAssert ref="rspAssertRef"/>
+              <editJsonAssert ref="jsonAssertRef"/>
               <editJsonExtract ref="jsonExtractRef"/>
               <editAfterBeanShell ref="afterBeanShellRef"/>
               <editPreBeanShell ref="preBeanShellRef"/>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'header'}">添加请求头</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'rsp_assert'}">添加响应断言</el-dropdown-item>
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'json_assert'}">添加JSON断言</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'json_extract'}">添加JSON提取器</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'after_beanshell'}">添加后置BeanShell</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'pre_beanshell'}">添加前置BeanShell</el-dropdown-item>
@@ -106,6 +108,7 @@ import editSampler from './editSampler'
 import samplerChildren from './samplerChildren/samplerChildren'
 import editHeader from './samplerChildren/editHeader'
 import editRspAssert from './samplerChildren/editRspAssert'
+import editJsonAssert from './samplerChildren/editJsonAssert'
 import editJsonExtract from './samplerChildren/editJsonExtract'
 import editAfterBeanShell from './samplerChildren/editAfterBeanShell'
 import editPreBeanShell from './samplerChildren/editPreBeanShell'
@@ -157,6 +160,7 @@ export default {
     samplerChildren,
     editHeader,
     editRspAssert,
+    editJsonAssert,
     editJsonExtract,
     editAfterBeanShell,
     editPreBeanShell
@@ -207,6 +211,8 @@ export default {
         this.$refs.headerRef.initForm(samplerId)
       } else if (childType === 'rsp_assert') {
         this.$refs.rspAssertRef.initForm(samplerId)
+      } else if (childType === 'json_assert') {
+        this.$refs.jsonAssertRef.initForm(samplerId)
       }
     },
     async deleteChild(childId) {

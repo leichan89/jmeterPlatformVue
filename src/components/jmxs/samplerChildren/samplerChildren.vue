@@ -15,6 +15,11 @@
             <el-tag size="medium" type="info">响应断言</el-tag>
           </div>
         </span>
+        <span v-if="scope.row.child_type==='json_assert'">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium" type="info">JSON断言</el-tag>
+          </div>
+        </span>
         <span v-if="scope.row.child_type==='json_extract'">
           <div slot="reference" class="name-wrapper">
             <el-tag size="medium" type="info">JSON提取器</el-tag>
@@ -37,6 +42,7 @@
       <template slot-scope="scope">
         <editHeader ref="headerRef" @fatherFn="getSamplerChildren"/>
         <editRspAssert ref="rspAssertRef" @fatherFn="getSamplerChildren"/>
+        <editJsonAssert ref="jsonAssertRef" @fatherFn="getSamplerChildren"/>
         <editJsonExtract ref="jsonExtractRef" @fatherFn="getSamplerChildren"/>
         <editAfterBeanShell ref="afterBeanShellRef" @fatherFn="getSamplerChildren"/>
         <editPreBeanShell ref="preBeanShellRef" @fatherFn="getSamplerChildren"/>
@@ -55,6 +61,7 @@
 
 import editHeader from './editHeader'
 import editRspAssert from './editRspAssert'
+import editJsonAssert from './editJsonAssert'
 import editJsonExtract from './editJsonExtract'
 import editPreBeanShell from './editPreBeanShell'
 import editAfterBeanShell from './editAfterBeanShell'
@@ -74,6 +81,7 @@ export default {
   components: {
     editHeader,
     editRspAssert,
+    editJsonAssert,
     editJsonExtract,
     editPreBeanShell,
     editAfterBeanShell
@@ -98,6 +106,8 @@ export default {
         this.$refs.headerRef.initForm(samplerId, childId)
       } else if (childType === 'rsp_assert') {
         this.$refs.rspAssertRef.initForm(samplerId, childId)
+      } else if (childType === 'json_assert') {
+        this.$refs.jsonAssertRef.initForm(samplerId, childId)
       }
     },
     async deleteChild(samplerId, childId) {
