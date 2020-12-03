@@ -51,6 +51,7 @@ export default {
       }
     }
   },
+  props: ['refreshTarget'],
   methods: {
     initForm(samplerId, childId = '') {
       this.jsonExtractFormData.samplerId = samplerId
@@ -85,6 +86,8 @@ export default {
         }
         this.jsonExtractVisible = false
         this.$emit('fatherFn')
+        // 修改父组件中的值，便于刷新子组件
+        this.$emit('update:refreshTarget', new Date().getTime())
         return this.$message.success('创建或者修改JSON提取器成功')
       })
     }

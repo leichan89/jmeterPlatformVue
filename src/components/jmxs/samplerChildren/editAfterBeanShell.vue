@@ -43,6 +43,7 @@ export default {
       }
     }
   },
+  props: ['refreshTarget'],
   methods: {
     initForm(samplerId, childId = '') {
       this.afterBeanShellFormData.samplerId = samplerId

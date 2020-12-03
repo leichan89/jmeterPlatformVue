@@ -74,6 +74,7 @@ export default {
   methods: {
     initForm(samplerId, childId = '') {
       this.rspAssertParamFormData.samplerId = samplerId
+      this.rspAssertParamFormData.assertContent = [{ key: '' }]
       this.eidtRspAssertDialogVisible = true
       setTimeout(() => {
         this.$refs.rspAssertParamFormDataRef.resetFields()
@@ -159,6 +160,8 @@ export default {
         }
         this.eidtRspAssertDialogVisible = false
         this.$emit('fatherFn')
+        // 修改父组件中的值，便于刷新子组件
+        this.$emit('update:refreshTarget', new Date().getTime())
         return this.$message.success('修改响应断言成功')
       })
     }

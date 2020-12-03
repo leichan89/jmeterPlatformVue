@@ -60,7 +60,8 @@
         <el-table-column type="expand">
           <template slot-scope="scope">
             <!-- 是sampler才需要展开 -->
-            <samplerChildren v-if="isEx && scope.row.child_type === 'sampler'" :samplerId="scope.row.id"/>
+            <!-- :key="refreshTarget"表示可以强制刷新子组件 -->
+            <samplerChildren v-if="isEx && scope.row.child_type === 'sampler'" :samplerId="scope.row.id" :key="refreshTarget"/>
           </template>
         </el-table-column>
         <el-table-column label="id" prop="id"/>
@@ -75,12 +76,12 @@
             <!-- 是sampler才需要有创建的按钮 -->
             <el-dropdown style="margin-left: 10px" @command="addChild" v-if="scope.row.child_type === 'sampler'">
               <el-button type="info" class="myicon" size="small" icon="el-icon-set-up" circle/>
-              <editHeader ref="headerRef"/>
-              <editRspAssert ref="rspAssertRef"/>
-              <editJsonAssert ref="jsonAssertRef"/>
-              <editJsonExtract ref="jsonExtractRef"/>
-              <editAfterBeanShell ref="afterBeanShellRef"/>
-              <editPreBeanShell ref="preBeanShellRef"/>
+              <editHeader ref="headerRef" :refreshTarget.sync="refreshTarget"/>
+              <editRspAssert ref="rspAssertRef" :refreshTarget.sync="refreshTarget"/>
+              <editJsonAssert ref="jsonAssertRef" :refreshTarget.sync="refreshTarget"/>
+              <editJsonExtract ref="jsonExtractRef" :refreshTarget.sync="refreshTarget"/>
+              <editAfterBeanShell ref="afterBeanShellRef" :refreshTarget.sync="refreshTarget"/>
+              <editPreBeanShell ref="preBeanShellRef" :refreshTarget.sync="refreshTarget"/>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'header'}">添加请求头</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'rsp_assert'}">添加响应断言</el-dropdown-item>
@@ -120,6 +121,7 @@ export default {
       isEx: false,
       expands: [],
       jmxId: '',
+      refreshTarget: '',
       threadTypeOptions: [
         {
           value: 'setup',

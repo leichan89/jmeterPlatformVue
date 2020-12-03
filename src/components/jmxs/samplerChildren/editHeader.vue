@@ -53,9 +53,11 @@ export default {
       }
     }
   },
+  props: ['refreshTarget'],
   methods: {
     initForm(samplerId, childId = '') {
       this.headerParamFormData.samplerId = samplerId
+      this.headerParamFormData.params = [{ key: '', value: '' }]
       this.eidtHeaderDialogVisible = true
       setTimeout(() => {
         this.$refs.headerParamFormDataRef.resetFields()
@@ -90,11 +92,14 @@ export default {
         if (!valid) return
         const { data: createHeaderRes } = await this.$http.post('/samplers/header/create_update', this.headerParamFormData)
         if (createHeaderRes.code !== 200) {
-          return this.$message.error('修改请求头失败')
+          return this.$message.error('创建或修改请求头失败')
         }
         this.eidtHeaderDialogVisible = false
         this.$emit('fatherFn')
-        return this.$message.success('修改请求头成功')
+        // 修改父组件中的值，便于刷新子组件
+        this.$emit('update:refreshTarget', new Date().getTime())
+        console.log(this.refreshTarget)
+        return this.$message.success('创建或修改请求头成功')
       })
     }
   }

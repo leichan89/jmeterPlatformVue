@@ -56,6 +56,7 @@ export default {
       }
     }
   },
+  props: ['refreshTarget'],
   methods: {
     initForm(samplerId, childId = '') {
       this.jsonAssertFormData.samplerId = samplerId
@@ -91,6 +92,8 @@ export default {
         }
         this.jsonAssertVisible = false
         this.$emit('fatherFn')
+        // 修改父组件中的值，便于刷新子组件
+        this.$emit('update:refreshTarget', new Date().getTime())
         return this.$message.success('创建或者修改json断言成功')
       })
     }
