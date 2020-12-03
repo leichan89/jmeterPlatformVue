@@ -19,7 +19,7 @@
           <el-input v-model="uploadForm.name" size="small" placeholder="CSV名称" style="width:100%"/>
         </el-form-item>
         <el-form-item label="变量名称" prop="variableNames">
-          <el-input v-model="uploadForm.variableNames" size="small" placeholder="多个变量以英文逗号隔开" style="width:100%"/>
+          <el-input v-model="uploadForm.variableNames" size="small" placeholder="多个变量以指定分割符号隔开" style="width:100%"/>
         </el-form-item>
         <el-form-item label="分隔符号" prop="delimiter">
           <el-input v-model="uploadForm.delimiter" size="small" placeholder="请输入分隔符" style="width:100%"/>
