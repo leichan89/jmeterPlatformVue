@@ -5,8 +5,7 @@
       <div>
         <span>性能测试平台</span>
         <div class="toggle-button" @click=toggleCollapse>
-          <i v-if="isCollapse===false" class="el-icon-s-fold"></i>
-          <i v-if="isCollapse" class="el-icon-s-unfold"></i>
+          <i :class="{'el-icon-s-fold': isCollapse == false,'el-icon-s-unfold': isCollapse == true}"/>
         </div>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
