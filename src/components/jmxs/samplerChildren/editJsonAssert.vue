@@ -8,7 +8,7 @@
         <el-form-item label="提取路径" prop="jsonPath">
           <el-input v-model="jsonAssertFormData.jsonPath" placeholder="json提取路径" size="small"/>
         </el-form-item>
-        <el-form-item label="预期值" prop="expectedValue">
+        <el-form-item label="预期值">
           <el-input v-model="jsonAssertFormData.expectedValue" placeholder="断言预期值" size="small" :disabled="jsonAssertFormData.expectNull"/>
         </el-form-item>
         <el-form-item label="其他设置">
@@ -49,9 +49,6 @@ export default {
         ],
         jsonPath: [
           { required: true, message: '请输入JSON提取路径', trigger: 'blur' }
-        ],
-        expectedValue: [
-          { required: true, message: '请输入断言预期值', trigger: 'blur' }
         ]
       }
     }
