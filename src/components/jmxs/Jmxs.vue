@@ -41,15 +41,15 @@
             <el-tooltip effect="dark" content="修改线程组属性" placement="top" :enterable="false">
               <editThreadNum :jmxId="scope.row.id"/>
             </el-tooltip>
-            <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-              <el-button type="warning" class="myicon" size="small" icon="el-icon-edit" circle @click="editJmx(scope.row)"/>
-            </el-tooltip>
-            <el-tooltip effect="dark" content="添加到任务" placement="top" :enterable="false">
-              <el-button type="primary" class="myicon" icon="el-icon-connection" circle size="small" @click="addToTask(scope.row)"/>
-            </el-tooltip>
-            <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-              <el-button type="danger" class="myicon" size="small" icon="el-icon-delete" circle @click="deleteJmx(scope.row.id)"/>
-            </el-tooltip>
+            <el-dropdown @command="moreOperate">
+              <el-button type="warning" class="myicon" size="small" icon="el-icon-set-up" circle/>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'edit'}">编辑JMX</el-dropdown-item>
+                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'copy'}">复制JMX</el-dropdown-item>
+                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'delete'}">删除JMX</el-dropdown-item>
+                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'bind'}">添加到任务</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -164,10 +164,10 @@ export default {
       }
     },
     // 添加到任务的按钮绑定的事件
-    addToTask(jmxInfo) {
+    addToTask(jmxId) {
       this.toTaskFormVisible = true
       this.getTasksList()
-      this.toTaskForm.jmx = jmxInfo.id
+      this.toTaskForm.jmx = jmxId
     },
     // 绑定事件提交按钮
     async bindSubmit() {
@@ -188,26 +188,49 @@ export default {
       return this.$message.success('运行成功！')
     },
     // 跳转到编辑页面
-    editJmx(jmxInfo) {
-      window.sessionStorage.setItem('jmxId', jmxInfo.id)
+    editJmx(jmxId) {
+      window.sessionStorage.setItem('jmxId', jmxId)
       this.$router.push({
         // 这个名字和router/index.js中的路由的名称一致
         name: 'editJmx',
         // 传值到另外一个组件，获取方式：this.$route.params.id
         params: {
-          id: jmxInfo.id
+          id: jmxId
         }
       })
     },
     // 删除JMX
     async deleteJmx(jmxId) {
-      const { data: deleteRes } = await this.$http.post(`jmxs/delete/${jmxId}`)
+      const { data: deleteRes } = await this.$http.post(`/jmxs/delete/${jmxId}`)
       if (deleteRes.code !== 200) {
         return this.$message.error(deleteRes.msg)
       }
       // 刷新列表
       this.getJmxsList()
       return this.$message.success('删除成功！')
+    },
+    async copyJmx(jmxId) {
+      const postData = { jmxId: jmxId, userId: window.sessionStorage.getItem('userId') }
+      const { data: copyRes } = await this.$http.post('/jmxs/copy', postData)
+      if (copyRes.code !== 200) {
+        return this.$message.error(copyRes.msg)
+      }
+      // 刷新列表
+      this.getJmxsList()
+      return this.$message.success('复制成功！')
+    },
+    moreOperate(command) {
+      const operateType = command.operateType
+      const jmxId = command.jmxId
+      if (operateType === 'edit') {
+        this.editJmx(jmxId)
+      } else if (operateType === 'bind') {
+        this.addToTask(jmxId)
+      } else if (operateType === 'delete') {
+        this.deleteJmx(jmxId)
+      } else if (operateType === 'copy') {
+        this.copyJmx(jmxId)
+      }
     }
   }
 }
