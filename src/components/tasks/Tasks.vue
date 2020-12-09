@@ -31,7 +31,13 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="运行任务" placement="top" :enterable="false">
-              <el-button class="myicon" type="success" size="small" icon="el-icon-video-play" circle @click="runTask(scope.row)"></el-button>
+              <el-button class="myicon" type="success" size="small" icon="el-icon-video-play" circle @click="runTask(scope.row)"/>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="任务详情" placement="top" :enterable="false">
+              <el-button class="myicon" type="primary" size="small" icon="el-icon-s-order" circle @click="getTaskDetail(scope.row.id)"/>
+            </el-tooltip>
+            <el-tooltip effect="dark" content="删除任务" placement="top" :enterable="false">
+              <el-button class="myicon" type="danger" size="small" icon="el-icon-delete" circle @click="deleteTask(scope.row.id)"/>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -48,6 +54,27 @@
           <el-button size="small" @click="cancleForm">取 消</el-button>
           <el-button size="small" type="primary" @click="submitForm">确 定</el-button>
         </div>
+      </el-dialog>
+
+      <!-- 任务详情对话框 -->
+      <el-dialog title="任务详情" :visible.sync="viewTaskDetailDialogVisible" width="60%">
+        <el-table :data="taskDetail" style="width: 100%">
+          <!-- 使用min-width自适应列的宽度 -->
+          <el-table-column prop="id" label="id" min-width="10%"/>
+          <el-table-column prop="jmx.jmx_alias" label="JMX名称" min-width="50%"/>
+          <el-table-column prop="add_time" label="添加时间" min-width="30%"/>
+          <el-table-column label="操作" min-width="10%">
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+                <el-button class="myicon" type="danger" size="small" icon="el-icon-delete" circle @click="taskDeleteJmx(scope.row.id)"/>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 底部区域，点击取消关闭 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="viewTaskDetailDialogVisible = false">取 消</el-button>
+      </span>
       </el-dialog>
 
       <!-- 分页区域,layout中的字符表示页面要显示的布局结构 -->
@@ -81,7 +108,10 @@ export default {
       createForm: {
         task_name: '',
         add_user: ''
-      }
+      },
+      viewTaskDetailDialogVisible: false,
+      taskDetail: [],
+      tempTaskId: ''
     }
   },
   created() {
@@ -141,6 +171,31 @@ export default {
       this.createFormVisible = false
       this.getTasksList()
       return this.$message.success('创建成功！')
+    },
+    async getTaskDetail(taskId) {
+      const { data: detailRes } = await this.$http.get(`/tasks/details/${taskId}`)
+      if (detailRes.code !== 200) {
+        return this.$message.error(detailRes.msg)
+      }
+      this.taskDetail = detailRes.data
+      this.tempTaskId = taskId
+      this.viewTaskDetailDialogVisible = true
+    },
+    async taskDeleteJmx(jmxId) {
+      const { data: deleteRes } = await this.$http.delete(`/tasks/deletejmx/${jmxId}`)
+      if (deleteRes.code !== 200) {
+        return this.$message.error(deleteRes.msg)
+      }
+      this.getTaskDetail(this.tempTaskId)
+      return this.$message.success('删除成功')
+    },
+    async deleteTask(taskId) {
+      const { data: deleteRes } = await this.$http.delete(`/tasks/delete/${taskId}`)
+      if (deleteRes.code !== 200) {
+        return this.$message.error(deleteRes.msg)
+      }
+      this.getTasksList()
+      return this.$message.success('删除成功')
     }
   }
 }

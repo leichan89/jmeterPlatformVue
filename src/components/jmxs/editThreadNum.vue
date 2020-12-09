@@ -1,6 +1,6 @@
 <template>
   <span style="margin-left: 10px;margin-right: 10px">
-    <el-button type="info" @click="initForm" size="small" class="myicon" icon="el-icon-tickets" circle/>
+    <el-button type="info" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle/>
     <el-dialog title="修改线程属性" :visible.sync="eidtThreadNumVisible" width="25%">
       <el-form ref="editThreadNumFormRef" :model="threadNumFormData" status-icon size="small" label-width="80px" :rules="editThreadNumFormRules">
         <el-form-item label="线程数" prop="numThreads">

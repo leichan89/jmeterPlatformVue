@@ -79,18 +79,22 @@
       <el-dialog title="聚合报告" :visible.sync="viewResultsDialogVisible" width="85%">
         <el-table :data="flowSummaryReport" style="width: 100%">
           <!-- 使用min-width自适应列的宽度 -->
-          <el-table-column prop="label" label="Label" min-width="20%"></el-table-column>
-          <el-table-column prop="samplers" label="#样本" min-width="6%"></el-table-column>
-          <el-table-column prop="average_req" label="平均值" min-width="7%"></el-table-column>
-          <el-table-column prop="median_req" label="中位数" min-width="7%"></el-table-column>
-          <el-table-column prop="line90_req" label="90%百分比" min-width="8%"></el-table-column>
-          <el-table-column prop="line95_req" label="95%百分比" min-width="8%"></el-table-column>
-          <el-table-column prop="line99_req" label="99%百分比" min-width="8%"></el-table-column>
-          <el-table-column prop="min_req" label="最小值" min-width="7%"></el-table-column>
-          <el-table-column prop="max_req" label="最大值" min-width="7%"></el-table-column>
-          <el-table-column prop="error_rate" label="异常%" min-width="7%"></el-table-column>
-          <el-table-column prop="tps" label="吞吐量" min-width="7%"></el-table-column>
-          <el-table-column prop="recieved_per" label="接收KB/s" min-width="8%"></el-table-column>
+          <el-table-column prop="label" label="Label" min-width="20%"/>
+          <el-table-column prop="samplers" label="#样本" min-width="6%"/>
+          <el-table-column prop="average_req" label="平均值" min-width="7%"/>
+          <el-table-column prop="median_req" label="中位数" min-width="7%"/>
+          <el-table-column prop="line90_req" label="90%百分比" min-width="8%"/>
+          <el-table-column label="95%百分比" min-width="8%">
+            <template slot-scope="scope">
+              <span style="color: red">{{scope.row.line95_req}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="line99_req" label="99%百分比" min-width="8%"/>
+          <el-table-column prop="min_req" label="最小值" min-width="7%"/>
+          <el-table-column prop="max_req" label="最大值" min-width="7%"/>
+          <el-table-column prop="error_rate" label="异常%" min-width="7%"/>
+          <el-table-column prop="tps" label="吞吐量" min-width="7%"/>
+          <el-table-column prop="recieved_per" label="接收KB/s" min-width="8%"/>
         </el-table>
         <!-- 底部区域，点击取消关闭 -->
       <span slot="footer" class="dialog-footer">
