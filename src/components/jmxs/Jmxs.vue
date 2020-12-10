@@ -41,13 +41,17 @@
             <el-tooltip effect="dark" content="修改线程组属性" placement="top" :enterable="false">
               <editThreadNum :jmxId="scope.row.id"/>
             </el-tooltip>
+            <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+              <el-popconfirm title="确定是否删除JMX？" @onConfirm="deleteJmx(scope.row.id)">
+                <el-button slot="reference" class="myicon" type="danger" size="small" icon="el-icon-delete" circle/>
+              </el-popconfirm>
+            </el-tooltip>
             <el-dropdown @command="moreOperate">
-              <el-button type="warning" class="myicon" size="small" icon="el-icon-set-up" circle/>
+              <el-button style="margin-left: 10px" type="warning" class="myicon" size="small" icon="el-icon-set-up" circle/>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'edit'}">编辑JMX</el-dropdown-item>
                 <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'copy'}">复制JMX</el-dropdown-item>
-                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'delete'}">删除JMX</el-dropdown-item>
-                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'bind'}">添加到任务</el-dropdown-item>
+                <el-dropdown-item :command="{jmxId: scope.row.id, operateType: 'bind'}">绑定任务</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -64,8 +68,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="toTaskFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="bindSubmit">确 定</el-button>
+          <el-button @click="toTaskFormVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="bindSubmit" size="small">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -226,8 +230,6 @@ export default {
         this.editJmx(jmxId)
       } else if (operateType === 'bind') {
         this.addToTask(jmxId)
-      } else if (operateType === 'delete') {
-        this.deleteJmx(jmxId)
       } else if (operateType === 'copy') {
         this.copyJmx(jmxId)
       }

@@ -37,7 +37,9 @@
               <el-button class="myicon" type="primary" size="small" icon="el-icon-s-order" circle @click="getTaskDetail(scope.row.id)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="删除任务" placement="top" :enterable="false">
-              <el-button class="myicon" type="danger" size="small" icon="el-icon-delete" circle @click="deleteTask(scope.row.id)"/>
+              <el-popconfirm title="确定是否删除任务？" @onConfirm="deleteTask(scope.row.id)">
+                <el-button style="margin-left: 10px" slot="reference" class="myicon" type="danger" size="small" icon="el-icon-delete" circle/>
+              </el-popconfirm>
             </el-tooltip>
           </template>
         </el-table-column>

@@ -42,3 +42,14 @@ background-color: #fff;
   /*line-height: 22px;*/
   color: #fff;
 }
+
+/* 删除对话框的样式重写 */
+.el-popover {
+    background: #fff;
+    padding: 12px;
+    color: #606266;
+    font-size: 14px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    border-radius: 5px;
+    border: 1px solid #ebeef5;
+}

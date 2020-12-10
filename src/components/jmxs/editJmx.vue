@@ -92,7 +92,9 @@
               </el-dropdown-menu>
             </el-dropdown>
             <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-              <el-button type="danger" @click="deleteChild(scope.row.id)" size="small" class="myicon" icon="el-icon-delete" circle/>
+              <el-popconfirm title="确定是否删除子元素？" @onConfirm="deleteChild(scope.row.id)">
+                <el-button slot="reference" class="myicon" type="danger" size="small" icon="el-icon-delete" circle/>
+              </el-popconfirm>
             </el-tooltip>
           </template>
         </el-table-column>
