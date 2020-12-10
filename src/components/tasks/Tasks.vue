@@ -68,7 +68,9 @@
           <el-table-column label="操作" min-width="10%">
             <template slot-scope="scope">
               <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-                <el-button class="myicon" type="danger" size="small" icon="el-icon-delete" circle @click="taskDeleteJmx(scope.row.id)"/>
+                <el-popconfirm title="确定是否删除任务？" @onConfirm="taskDeleteJmx(scope.row.id)">
+                  <el-button style="margin-left: -5px" slot="reference" class="myicon" type="danger" size="small" icon="el-icon-delete" circle/>
+                </el-popconfirm>
               </el-tooltip>
             </template>
           </el-table-column>
