@@ -106,7 +106,7 @@
           <el-table-column label="95%百分比" min-width="8%">
             <template slot-scope="scope">
               <span style="color: red" v-if="scope.row.line95_req > 600">{{scope.row.line95_req}}</span>
-              <span v-else>{{scope.row.line95_req}}</span>
+              <span v-else style="color: #67c23a">{{scope.row.line95_req}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="line99_req" label="99%百分比" min-width="8%"/>
@@ -115,19 +115,19 @@
           <el-table-column prop="error_rate" label="异常%" min-width="7%">
             <template slot-scope="scope">
               <span v-if="scope.row.error_rate !== '0.00%'" style="color: red">{{scope.row.error_rate}}</span>
-              <span v-else>{{scope.row.error_rate}}</span>
+              <span v-else style="color: #67c23a">{{scope.row.error_rate}}</span>
             </template>
           </el-table-column>
           <el-table-column label="吞吐量" min-width="7%">
             <template slot-scope="scope">
-              <span style="color: red">{{scope.row.tps}}</span>
+              <span style="color: #67c23a">{{scope.row.tps}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="recieved_per" label="接收KB/s" min-width="8%"/>
-          <el-table-column prop="recieved_per" label="操作" min-width="4%">
+          <el-table-column prop="recieved_per" label="接收KB/s" min-width="7%"/>
+          <el-table-column prop="recieved_per" label="操作" min-width="5%">
             <template slot-scope="scope">
               <el-tooltip effect="dark" content="响应" placement="top" :enterable="false">
-                <el-button type="primary" v-if="scope.row.sampler_id !== -1" @click="getRspData(scope.row.flow, scope.row.sampler_id)" size="small" class="myicon" icon="el-icon-chat-dot-square" circle/>
+                <el-button type="primary" v-if="scope.row.sampler_id !== -1" @click="getRspData(scope.row.flow, scope.row.sampler_id)" size="small" class="myicon" icon="el-icon-s-comment" circle/>
               </el-tooltip>
             </template>
           </el-table-column>
