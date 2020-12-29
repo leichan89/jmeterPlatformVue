@@ -76,29 +76,65 @@
       </el-pagination>
 
       <!-- 查看聚合报告的对话框 -->
-      <el-dialog title="聚合报告" :visible.sync="viewResultsDialogVisible" width="85%">
+      <el-dialog title="聚合报告" :visible.sync="viewResultsDialogVisible" width="95%">
+        <el-dialog
+          width="80%"
+          title="响应信息"
+          :visible.sync="innerRspVisible"
+          append-to-body>
+          <el-table :data="rspData" style="width: 100%">
+          <!-- 使用min-width自适应列的宽度 -->
+            <el-table-column prop="response" label="响应数据" min-width="90%"/>
+            <el-table-column prop="count" label="出现次数" min-width="10%"/>
+          </el-table>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="innerRspVisible = false" size="small">关闭</el-button>
+          </span>
+        </el-dialog>
         <el-table :data="flowSummaryReport" style="width: 100%">
           <!-- 使用min-width自适应列的宽度 -->
-          <el-table-column prop="label" label="Label" min-width="20%"/>
+          <el-table-column label="Label" min-width="16%">
+            <template slot-scope="scope">
+              <span v-if="scope.row.error_rate !== '0.00%' || scope.row.line95_req > 600" style="color: red">{{scope.row.label}}</span>
+              <span v-else>{{scope.row.label}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="samplers" label="#样本" min-width="6%"/>
           <el-table-column prop="average_req" label="平均值" min-width="7%"/>
           <el-table-column prop="median_req" label="中位数" min-width="7%"/>
           <el-table-column prop="line90_req" label="90%百分比" min-width="8%"/>
           <el-table-column label="95%百分比" min-width="8%">
             <template slot-scope="scope">
-              <span style="color: red">{{scope.row.line95_req}}</span>
+              <span style="color: red" v-if="scope.row.line95_req > 600">{{scope.row.line95_req}}</span>
+              <span v-else>{{scope.row.line95_req}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="line99_req" label="99%百分比" min-width="8%"/>
           <el-table-column prop="min_req" label="最小值" min-width="7%"/>
           <el-table-column prop="max_req" label="最大值" min-width="7%"/>
-          <el-table-column prop="error_rate" label="异常%" min-width="7%"/>
-          <el-table-column prop="tps" label="吞吐量" min-width="7%"/>
+          <el-table-column prop="error_rate" label="异常%" min-width="7%">
+            <template slot-scope="scope">
+              <span v-if="scope.row.error_rate !== '0.00%'" style="color: red">{{scope.row.error_rate}}</span>
+              <span v-else>{{scope.row.error_rate}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="吞吐量" min-width="7%">
+            <template slot-scope="scope">
+              <span style="color: red">{{scope.row.tps}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="recieved_per" label="接收KB/s" min-width="8%"/>
+          <el-table-column prop="recieved_per" label="操作" min-width="4%">
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" content="响应" placement="top" :enterable="false">
+                <el-button type="primary" v-if="scope.row.sampler_id !== -1" @click="getRspData(scope.row.flow, scope.row.sampler_id)" size="small" class="myicon" icon="el-icon-chat-dot-square" circle/>
+              </el-tooltip>
+            </template>
+          </el-table-column>
         </el-table>
         <!-- 底部区域，点击取消关闭 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="viewResultsDialogVisible = false">取 消</el-button>
+        <el-button @click="viewResultsDialogVisible = false" size="small">关闭</el-button>
       </span>
       </el-dialog>
 
@@ -118,7 +154,10 @@ export default {
       taskFlowsList: [],
       count: 0,
       viewResultsDialogVisible: false,
-      flowSummaryReport: []
+      innerRspVisible: false,
+      flowSummaryReport: [],
+      // 响应数据
+      rspData: []
     }
   },
   created() {
@@ -170,6 +209,15 @@ export default {
       }
       this.flowSummaryReport = res.data
       this.viewResultsDialogVisible = true
+    },
+    // 查询单个sampler的响应信息
+    async getRspData(flowId, samplerId) {
+      const { data: rspRes } = await this.$http.get(`/tasks/rsp/${flowId}/${samplerId}`)
+      if (rspRes.code !== 200) {
+        return this.$message.error(rspRes.msg)
+      }
+      this.rspData = rspRes.data
+      this.innerRspVisible = true
     }
   }
 }
