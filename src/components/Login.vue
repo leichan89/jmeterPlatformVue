@@ -28,6 +28,7 @@
 
 <!-- 注意不要随便留空格 -->
 <script>
+import cookie from 'js-cookie'
 export default {
   data () {
     return {
@@ -70,6 +71,8 @@ export default {
           // sessionStorage是会话期间的存储机制，每次会话生效，loclaStorage是持久化的存储
           window.sessionStorage.setItem('token', res.data.token)
           window.sessionStorage.setItem('userId', res.data.user)
+          cookie.set('token', res.data.token)
+          cookie.set('userId', res.data.user)
           // $router编程式导航对象，通过它跳转到后台主页/home
           this.$router.push('/home')
         } catch (error) {

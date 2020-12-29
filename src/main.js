@@ -9,12 +9,12 @@ import './assets/fonts/iconfont.css'
 import axios from 'axios'
 // 配置请求的根路径
 import global_ from './config/global.js'
+import cookie from 'js-cookie'
 
 Vue.prototype.GLOBAL = global_
 axios.defaults.baseURL = global_.BASE_URL
 axios.interceptors.request.use(config => {
-  console.log(config)
-  config.headers.Authorization = window.sessionStorage.getItem('token')
+  config.headers.Authorization = cookie.get('token')
   // 在最后必须return config
   return config
 })

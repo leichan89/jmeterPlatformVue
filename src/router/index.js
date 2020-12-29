@@ -7,6 +7,7 @@ import Jmxs from '../components/jmxs/Jmxs.vue'
 import Tasks from '../components/tasks/Tasks.vue'
 import Flows from '../components/tasks/Flows.vue'
 import editJmx from '../components/jmxs/editJmx.vue'
+import cookie from 'js-cookie'
 
 Vue.use(VueRouter)
 
@@ -67,7 +68,7 @@ router.beforeEach((to, from, next) => {
   // 访问登陆页面直接放行
   if (to.path === '/login') return next()
   // 从sessionStorage中获取token
-  const tokenStr = window.sessionStorage.getItem('token')
+  const tokenStr = cookie.get('token')
   // 没有token，强制跳转到登陆页面
   if (!tokenStr) return next('/login')
   next()
