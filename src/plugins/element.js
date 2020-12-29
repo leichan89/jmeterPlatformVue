@@ -36,7 +36,8 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  Popconfirm
+  Popconfirm,
+  Image
 } from 'element-ui'
 // 全局注册这些使用到的组件
 Vue.use(Button)
@@ -73,6 +74,7 @@ Vue.use(Dropdown)
 Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Popconfirm)
+Vue.use(Image)
 // 需要全局挂载，将Message挂载到vue的原型对象上,$message是自定义属性，可以修改名字
 // 每一个组件都可以通过this访问到$message
 Vue.prototype.$message = Message

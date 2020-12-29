@@ -132,7 +132,9 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- 底部区域，点击取消关闭 -->
+      <el-image style="width: 50%" :src="rtPngUrl"/>
+      <el-image style="width: 50%" :src="tpsPngUrl"/>
+      <!-- 底部区域，点击取消关闭 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="viewResultsDialogVisible = false" size="small">关闭</el-button>
       </span>
@@ -156,6 +158,8 @@ export default {
       viewResultsDialogVisible: false,
       innerRspVisible: false,
       flowSummaryReport: [],
+      rtPngUrl: '',
+      tpsPngUrl: '',
       // 响应数据
       rspData: []
     }
@@ -203,11 +207,19 @@ export default {
     },
     // 获取聚合报告的方法
     async getAggregateReport(flowInfo) {
-      const { data: res } = await this.$http.get(`tasks/queryAggregateReport/${flowInfo.id}`)
-      if (res.code !== 200) {
-        return this.$message.error(res.msg)
+      const { data: resRsp } = await this.$http.get(`tasks/queryAggregateReport/${flowInfo.id}`)
+      if (resRsp.code !== 200) {
+        return this.$message.error(resRsp.msg)
       }
-      this.flowSummaryReport = res.data
+      this.flowSummaryReport = resRsp.data
+      // 查询图片信息
+      const { data: resPng } = await this.$http.get(`tasks/png/${flowInfo.id}`)
+      if (resPng.code !== 200) {
+        return this.$message.error(resPng.msg)
+      }
+      this.rtPngUrl = this.GLOBAL.BASE_URL + resPng.data.rt_png_url
+      console.log(this.rtPngUrl)
+      this.tpsPngUrl = this.GLOBAL.BASE_URL + resPng.data.tps_png_url
       this.viewResultsDialogVisible = true
     },
     // 查询单个sampler的响应信息
