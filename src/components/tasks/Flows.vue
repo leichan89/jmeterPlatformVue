@@ -170,6 +170,10 @@ export default {
   methods: {
     // 获取任务流水的方法
     async getTaskFlowsList() {
+      if (this.queryInfo.search !== '') {
+        this.queryInfo.num = 1
+        this.queryInfo.size = 10
+      }
       const { data: res } = await this.$http.get('tasks/flows', {
         params: this.queryInfo
       })
@@ -193,14 +197,12 @@ export default {
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
-      console.log(newSize)
       this.queryInfo.size = newSize
       // 每页显示条数发生变化后，重新请求数据
       this.getTaskFlowsList()
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
-      console.log(newPage)
       this.queryInfo.num = newPage
       // 页码发生变化后，重新请求获取数据
       this.getTaskFlowsList()

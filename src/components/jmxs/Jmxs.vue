@@ -127,6 +127,10 @@ export default {
   },
   methods: {
     async getJmxsList() {
+      if (this.queryInfo.search !== '') {
+        this.queryInfo.num = 1
+        this.queryInfo.size = 10
+      }
       const { data: res } = await this.$http.get('/jmxs', {
         params: this.queryInfo
       })

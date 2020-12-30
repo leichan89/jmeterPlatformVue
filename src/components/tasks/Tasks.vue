@@ -123,6 +123,10 @@ export default {
   },
   methods: {
     async getTasksList() {
+      if (this.queryInfo.search !== '') {
+        this.queryInfo.num = 1
+        this.queryInfo.size = 10
+      }
       const { data: res } = await this.$http.get('tasks', {
         params: this.queryInfo
       })
@@ -143,14 +147,12 @@ export default {
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
-      console.log(newSize)
       this.queryInfo.size = newSize
       // 每页显示条数发生变化后，重新请求数据
       this.getTasksList()
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
-      console.log(newPage)
       this.queryInfo.num = newPage
       // 页码发生变化后，重新请求获取数据
       this.getTasksList()
@@ -158,12 +160,10 @@ export default {
     // 初始化创建对话框
     initForm() {
       this.createFormVisible = true
-      this.uploadForm = {}
     },
     // 取消对话框时的操作
     cancleForm() {
       this.createFormVisible = false
-      this.uploadForm = {}
     },
     // 创建任务的提交事件
     async submitForm() {
