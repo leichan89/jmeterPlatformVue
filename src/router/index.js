@@ -21,9 +21,10 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect: 'welcome',
+    redirect: 'jmxs',
     children: [
       {
+        // 暂时没想好主页，先不跳转到welcome
         path: '/welcome',
         component: Welcome
       },

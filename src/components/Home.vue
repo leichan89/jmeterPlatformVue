@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import cookie from 'js-cookie'
 export default {
   data() {
     return {
@@ -85,6 +86,8 @@ export default {
   methods: {
     logout () {
       window.sessionStorage.clear()
+      // 删除cookie
+      cookie.remove('token')
       this.$router.push('/login')
     },
     // 获取所有菜单
