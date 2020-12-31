@@ -1,6 +1,6 @@
 <template>
   <span>
-    <el-dialog title="BeanShell后置处理器" :visible.sync="afterBeanShellVisible" width="30%">
+    <el-dialog title="BeanShell后置处理器" :visible.sync="afterBeanShellVisible" width="60%">
       <el-form ref="afterBeanShellFormDataRef" :model="afterBeanShellFormData" status-icon size="small" label-width="80px" :rules="afterBeanShellFormRules">
         <el-form-item label="名称" prop="name">
           <el-input v-model="afterBeanShellFormData.name" placeholder="BeanShell后置处理器名称" size="small"/>

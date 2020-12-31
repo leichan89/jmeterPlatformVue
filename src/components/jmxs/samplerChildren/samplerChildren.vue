@@ -35,6 +35,11 @@
             <el-tag size="medium" type="info">后置BeanShell</el-tag>
           </div>
         </span>
+        <span v-if="scope.row.child_type==='JSR223'">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium" type="info">JSR223</el-tag>
+          </div>
+        </span>
       </template>
     </el-table-column>
     <el-table-column label="创建时间" prop="add_time"></el-table-column>
@@ -46,6 +51,8 @@
         <editJsonExtract ref="jsonExtractRef" @fatherFn="getSamplerChildren"/>
         <editAfterBeanShell ref="afterBeanShellRef" @fatherFn="getSamplerChildren"/>
         <editPreBeanShell ref="preBeanShellRef" @fatherFn="getSamplerChildren"/>
+        <editPreBeanShell ref="preBeanShellRef" @fatherFn="getSamplerChildren"/>
+        <editJSR223 ref="JSR223Ref" @fatherFn="getSamplerChildren"/>
         <el-tooltip effect="dark" content="修改" placement="top" :enterable="false">
           <el-button type="primary" @click="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
         </el-tooltip>
@@ -67,6 +74,7 @@ import editJsonAssert from './editJsonAssert'
 import editJsonExtract from './editJsonExtract'
 import editPreBeanShell from './editPreBeanShell'
 import editAfterBeanShell from './editAfterBeanShell'
+import editJSR223 from './editJSR223'
 
 export default {
   data() {
@@ -86,7 +94,8 @@ export default {
     editJsonAssert,
     editJsonExtract,
     editPreBeanShell,
-    editAfterBeanShell
+    editAfterBeanShell,
+    editJSR223
   },
   methods: {
     async getSamplerChildren() {
@@ -110,6 +119,8 @@ export default {
         this.$refs.rspAssertRef.initForm(samplerId, childId)
       } else if (childType === 'json_assert') {
         this.$refs.jsonAssertRef.initForm(samplerId, childId)
+      } else if (childType === 'JSR223') {
+        this.$refs.JSR223Ref.initForm(samplerId, childId)
       }
     },
     async deleteChild(samplerId, childId) {

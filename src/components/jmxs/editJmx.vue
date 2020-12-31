@@ -82,6 +82,7 @@
               <editJsonExtract ref="jsonExtractRef" :refreshTarget.sync="refreshTarget"/>
               <editAfterBeanShell ref="afterBeanShellRef" :refreshTarget.sync="refreshTarget"/>
               <editPreBeanShell ref="preBeanShellRef" :refreshTarget.sync="refreshTarget"/>
+              <editJSR223 ref="JSR223Ref" :refreshTarget.sync="refreshTarget"/>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'header'}">添加请求头</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'rsp_assert'}">添加响应断言</el-dropdown-item>
@@ -89,6 +90,7 @@
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'json_extract'}">添加JSON提取器</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'after_beanshell'}">添加后置BeanShell</el-dropdown-item>
                 <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'pre_beanshell'}">添加前置BeanShell</el-dropdown-item>
+                <el-dropdown-item :command="{samplerId: scope.row.id, childType: 'JSR223'}">添加JSR223</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
@@ -115,6 +117,7 @@ import editJsonAssert from './samplerChildren/editJsonAssert'
 import editJsonExtract from './samplerChildren/editJsonExtract'
 import editAfterBeanShell from './samplerChildren/editAfterBeanShell'
 import editPreBeanShell from './samplerChildren/editPreBeanShell'
+import editJSR223 from './samplerChildren/editJSR223'
 import editCsv from './editCsv'
 
 export default {
@@ -167,7 +170,8 @@ export default {
     editJsonAssert,
     editJsonExtract,
     editAfterBeanShell,
-    editPreBeanShell
+    editPreBeanShell,
+    editJSR223
   },
   // 页面加载前调用
   created() {
@@ -217,6 +221,8 @@ export default {
         this.$refs.rspAssertRef.initForm(samplerId)
       } else if (childType === 'json_assert') {
         this.$refs.jsonAssertRef.initForm(samplerId)
+      } else if (childType === 'JSR223') {
+        this.$refs.JSR223Ref.initForm(samplerId)
       }
     },
     async deleteChild(childId) {
