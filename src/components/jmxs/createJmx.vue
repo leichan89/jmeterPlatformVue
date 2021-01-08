@@ -60,6 +60,7 @@ import formParamInput from './formParamInput.vue'
 import rawParamInput from './rawParamInput.vue'
 import headerParamInput from './headerParamInput.vue'
 import rspAssertParaamInput from './rspAssertParamInput'
+import cookie from 'js-cookie'
 
 export default {
   data () {
@@ -131,7 +132,7 @@ export default {
       this.$refs.createJmxFormRef.validate(async valid => {
         // 校验填写的参数，如果校验失败，则标红提示
         if (!valid) return
-        this.createJmxForm.addUser = window.sessionStorage.getItem('userId')
+        this.createJmxForm.addUser = cookie.get('userId')
         if (this.createJmxForm.paramType === 'form') {
           this.createJmxForm.params = this.$refs.formparamRef.formParamFormData.list
         } else if (this.createJmxForm.paramType === 'raw') {

@@ -60,6 +60,9 @@ export default {
       this.jsonAssertVisible = true
       setTimeout(() => {
         this.$refs.jsonAssertFormDataRef.resetFields()
+        this.jsonAssertFormData.expectedValue = ''
+        this.jsonAssertFormData.expectNull = false
+        this.jsonAssertFormData.invert = false
       })
       if (childId !== '') {
         setTimeout(() => {

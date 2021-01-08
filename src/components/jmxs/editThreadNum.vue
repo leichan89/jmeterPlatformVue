@@ -1,10 +1,13 @@
 <template>
   <span style="margin-left: 10px;margin-right: 10px">
     <el-button type="info" @click="initForm" size="small" class="myicon" icon="el-icon-tickets" circle/>
-    <el-dialog title="修改线程属性" :visible.sync="eidtThreadNumVisible" width="25%">
+    <el-dialog title="修改JMX属性" :visible.sync="eidtThreadNumVisible" width="25%">
       <el-form ref="editThreadNumFormRef" :model="threadNumFormData" status-icon size="small" label-width="80px" :rules="editThreadNumFormRules">
-        <el-form-item label="线程数" prop="numThreads">
-          <el-input v-model="threadNumFormData.numThreads" placeholder="线程数" size="small"/>
+        <el-form-item label="JMX名称" prop="jmxAlias">
+          <el-input v-model="threadNumFormData.jmxAlias" placeholder="JMX名称" size="small"/>
+        </el-form-item>
+        <el-form-item label="线程组数" prop="numThreads">
+          <el-input v-model="threadNumFormData.numThreads" placeholder="线程组数" size="small"/>
         </el-form-item>
         <el-form-item label="RampUp" prop="rampTime">
           <el-input v-model="threadNumFormData.rampTime" placeholder="Ramp-Up时间（单位s）" size="small"/>
@@ -51,6 +54,7 @@ export default {
       ],
       threadNumFormData: {
         jmxId: '',
+        jmxAlias: '',
         numThreads: '',
         rampTime: '',
         loops: '',
@@ -59,8 +63,11 @@ export default {
       },
       // 校验必填参数
       editThreadNumFormRules: {
+        jmxAlias: [
+          { required: true, message: '请输入JMX名称', trigger: 'blur' }
+        ],
         numThreads: [
-          { required: true, message: '请输入线程数', trigger: 'blur' }
+          { required: true, message: '请输入线程组数', trigger: 'blur' }
         ],
         rampTime: [
           { required: true, message: '请输入rampTime时间', trigger: 'blur' }
@@ -86,6 +93,7 @@ export default {
       }
       const threadNumInfo = JSON.parse(threadNumRes.data.thread_base_info)
       this.threadNumFormData.jmxId = this.jmxId
+      this.threadNumFormData.jmxAlias = threadNumRes.data.jmx_alias
       this.threadNumFormData.numThreads = threadNumInfo.num_threads
       this.threadNumFormData.rampTime = threadNumInfo.ramp_time
       this.threadNumFormData.loops = threadNumInfo.loops
@@ -99,6 +107,7 @@ export default {
         if (editThreadNum.code !== 200) {
           return this.$message.error('修改线程组属性失败')
         }
+        this.$emit('fatherFn')
         this.eidtThreadNumVisible = false
         return this.$message.success('修改线程组属性成功')
       })

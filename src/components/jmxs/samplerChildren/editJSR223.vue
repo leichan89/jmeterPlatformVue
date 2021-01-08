@@ -32,7 +32,6 @@ export default {
         samplerId: '',
         childId: '',
         name: '',
-        language: 'jython',
         toJSR223Param: '',
         express: ''
       },

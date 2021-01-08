@@ -39,7 +39,7 @@
               <el-button type="success" class="myicon" size="small" icon="el-icon-video-play" circle @click="runJmx(scope.row)"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="修改线程组属性" placement="top" :enterable="false">
-              <editThreadNum :jmxId="scope.row.id"/>
+              <editThreadNum :jmxId="scope.row.id" @fatherFn="getJmxsList"/>
             </el-tooltip>
             <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
               <el-popconfirm title="确定是否删除JMX？" @onConfirm="deleteJmx(scope.row.id)">
@@ -92,6 +92,7 @@
 import createJmx from './createJmx.vue'
 import uploadJmx from './uploadJmx.vue'
 import editThreadNum from './editThreadNum.vue'
+import cookie from 'js-cookie'
 
 export default {
   data() {
@@ -188,7 +189,7 @@ export default {
     },
     // 运行任务的事件
     async runJmx(jmxInfo) {
-      const userId = window.sessionStorage.getItem('userId')
+      const userId = cookie.get('userId')
       const { data: res } = await this.$http.post(`/tasks/runjmx/${userId}/${jmxInfo.id}`)
       if (res.code !== 200) {
         return this.$message.error(res.msg)
@@ -218,7 +219,7 @@ export default {
       return this.$message.success('删除成功！')
     },
     async copyJmx(jmxId) {
-      const postData = { jmxId: jmxId, userId: window.sessionStorage.getItem('userId') }
+      const postData = { jmxId: jmxId, userId: cookie.get('userId') }
       const { data: copyRes } = await this.$http.post('/jmxs/copy', postData)
       if (copyRes.code !== 200) {
         return this.$message.error(copyRes.msg)

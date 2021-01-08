@@ -57,6 +57,7 @@
           <el-button type="primary" @click="modifyChild(sampId, scope.row.id, scope.row.child_type)" size="small" class="myicon" icon="el-icon-edit" circle/>
         </el-tooltip>
         <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
+          <!-- 删除存在一个bug，删除后，编辑其他子元素会报错，需要刷新整个页面，目前没有找到合适解决方法 -->
           <el-popconfirm title="确定是否删除子元素？" @onConfirm="deleteChild(sampId, scope.row.id)">
             <el-button style="margin-left: 10px" slot="reference" class="myicon" type="danger" size="small" icon="el-icon-delete" circle/>
           </el-popconfirm>
@@ -129,7 +130,8 @@ export default {
         return this.$message.error('删除子元素失败')
       }
       // 重新加载子元素列表
-      this.getSamplerChildren()
+      // this.getSamplerChildren()
+      window.location.reload()
       return this.$message.success('删除子元素成功')
     }
   }
