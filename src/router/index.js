@@ -15,7 +15,13 @@ Vue.use(VueRouter)
 const routes = [
   // path表示监听的地址
   { path: '/', redirect: '/login' },
-  { path: '/login', component: Login },
+  {
+    path: '/login',
+    component: Login,
+    meta: {
+      title: '登陆'
+    }
+  },
   // children:子路由,component：组件
   // redirect重定向，访问home时，就访问子路由welcome
   {
@@ -67,8 +73,12 @@ router.beforeEach((to, from, next) => {
   // next('/login') 强制跳转
 
   // 访问登陆页面直接放行
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
   if (to.path === '/login') return next()
-  // 从sessionStorage中获取token
+  // 从cookie中获取token
   const tokenStr = cookie.get('token')
   // 没有token，强制跳转到登陆页面
   if (!tokenStr) return next('/login')
