@@ -7,6 +7,7 @@ import Jmxs from '../components/jmxs/Jmxs.vue'
 import Tasks from '../components/tasks/Tasks.vue'
 import Flows from '../components/tasks/Flows.vue'
 import editJmx from '../components/jmxs/editJmx.vue'
+import Params from '../components/params/Params'
 import cookie from 'js-cookie'
 
 Vue.use(VueRouter)
@@ -37,7 +38,10 @@ const routes = [
       {
         path: '/jmxs',
         component: Jmxs,
-        name: 'jmxs'
+        name: 'jmxs',
+        meta: {
+          title: 'JMX列表'
+        }
       },
       {
         path: '/jmxs/edit',
@@ -46,11 +50,24 @@ const routes = [
       },
       {
         path: '/tasks',
-        component: Tasks
+        component: Tasks,
+        meta: {
+          title: '任务列表'
+        }
       },
       {
         path: '/tasks/flows',
-        component: Flows
+        component: Flows,
+        meta: {
+          title: '流水列表'
+        }
+      },
+      {
+        path: '/params',
+        component: Params,
+        meta: {
+          title: '全局参数'
+        }
       }
     ]
   }
