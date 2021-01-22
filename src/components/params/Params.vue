@@ -26,7 +26,7 @@
       <el-table :data="paramsList" border stripe>
         <el-table-column label="参数id" prop="id"></el-table-column>
         <el-table-column label="参数名" prop="param_name"></el-table-column>
-        <el-table-column label="参数值" prop="param_value"></el-table-column>
+        <el-table-column label="备注" prop="param_content"></el-table-column>
         <el-table-column label="创建人" prop="user.name"></el-table-column>
         <el-table-column label="创建时间" prop="add_time"></el-table-column>
         <el-table-column label="操作">
@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import cookie from 'js-cookie'
+
 export default {
   data() {
     return {
@@ -129,7 +131,6 @@ export default {
       }
       this.paramsList = res.data.results
       this.count = res.data.count
-      console.log(this.paramsList)
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(newSize) {
@@ -148,6 +149,7 @@ export default {
       this.createForm.param_name = ''
       this.createForm.param_value = ''
       this.createForm.param_content = ''
+      this.methodType = 'create'
       setTimeout(() => {
         this.$refs.createFormRef.resetFields()
       })
@@ -159,7 +161,7 @@ export default {
     },
     // 创建任务的提交事件
     async submitForm() {
-      this.createForm.user = window.sessionStorage.getItem('userId')
+      this.createForm.user = cookie.get('userId')
       if (this.methodType === 'update') {
         this.editParams()
       }

@@ -49,7 +49,7 @@
       <el-dialog title="新建任务" :visible.sync="createFormVisible" width="30%">
         <el-form :model="createForm" label-width="75px" class="demo-ruleForm">
           <el-form-item label="任务名称:">
-            <el-input v-model="createForm.task_name"></el-input>
+            <el-input v-model="createForm.task_name" size="small"/>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import cookie from 'js-cookie'
 export default {
   data() {
     return {
@@ -139,7 +140,7 @@ export default {
     },
     // 运行任务的事件
     async runTask(taskInfo) {
-      const { data: res } = await this.$http.post(`tasks/run/${taskInfo.id}`)
+      const { data: res } = await this.$http.post(`/tasks/run/${taskInfo.id}`)
       if (res.code !== 200) {
         return this.$message.error(res.msg)
       }
@@ -167,8 +168,8 @@ export default {
     },
     // 创建任务的提交事件
     async submitForm() {
-      this.createForm.add_user = window.sessionStorage.getItem('userId')
-      const { data: res } = await this.$http.post('tasks/create', this.createForm)
+      this.createForm.add_user = cookie.get('userId')
+      const { data: res } = await this.$http.post('/tasks/create', this.createForm)
       if (res.code !== 200) {
         return this.$message.error(res.msg)
       }
