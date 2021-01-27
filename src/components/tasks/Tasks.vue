@@ -47,8 +47,8 @@
 
       <!-- 创建任务对话框 -->
       <el-dialog title="新建任务" :visible.sync="createFormVisible" width="30%">
-        <el-form :model="createForm" label-width="75px" class="demo-ruleForm">
-          <el-form-item label="任务名称:">
+        <el-form :model="createForm" ref="createFormRef" label-width="75px" class="demo-ruleForm" :rules="createFormRules">
+          <el-form-item label="名称:" prop="task_name">
             <el-input v-model="createForm.task_name" size="small"/>
           </el-form-item>
         </el-form>
@@ -116,7 +116,13 @@ export default {
       },
       viewTaskDetailDialogVisible: false,
       taskDetail: [],
-      tempTaskId: ''
+      tempTaskId: '',
+      createFormRules: {
+        task_name: [
+          { required: true, message: '请输入任务名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -167,15 +173,18 @@ export default {
       this.createFormVisible = false
     },
     // 创建任务的提交事件
-    async submitForm() {
-      this.createForm.add_user = cookie.get('userId')
-      const { data: res } = await this.$http.post('/tasks/create', this.createForm)
-      if (res.code !== 200) {
-        return this.$message.error(res.msg)
-      }
-      this.createFormVisible = false
-      this.getTasksList()
-      return this.$message.success('创建成功！')
+    submitForm() {
+      this.$refs.createFormRef.validate(async valid => {
+        if (!valid) return
+        this.createForm.add_user = cookie.get('userId')
+        const { data: res } = await this.$http.post('/tasks/create', this.createForm)
+        if (res.code !== 200) {
+          return this.$message.error(res.msg)
+        }
+        this.createFormVisible = false
+        this.getTasksList()
+        return this.$message.success('创建成功！')
+      })
     },
     async getTaskDetail(taskId) {
       const { data: detailRes } = await this.$http.get(`/tasks/details/${taskId}`)
