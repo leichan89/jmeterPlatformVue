@@ -14,7 +14,7 @@
       <el-row :gutter="10">
         <el-col :span="10">
           <!-- 注意使用style拉满100%的作用，配合span=10使用才能正确使用span -->
-          <el-input placeholder="请输入内容" v-model="queryInfo.search" clearable @clear="getJmxsList" style="width: 100%">
+          <el-input placeholder="请输入内容" maxLength="10" v-model="queryInfo.search" @keypress.native.enter="getJmxsList" clearable @clear="getJmxsList" style="width: 100%">
             <el-button slot="append" icon="el-icon-search" @click="getJmxsList"></el-button>
           </el-input>
         </el-col>

@@ -81,13 +81,16 @@ export default {
       // 校验必填参数
       createJmxFormRules: {
         jmxName: [
-          { required: true, message: '请输入JMX名称', trigger: 'blur' }
+          { required: true, message: '请输入JMX名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 30 个字符', trigger: 'blur' }
         ],
         samplerName: [
-          { required: true, message: '请输入sampler名称', trigger: 'blur' }
+          { required: true, message: '请输入sampler名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         url: [
-          { required: true, message: '请输入URL', trigger: 'blur' }
+          { required: true, message: '请输入URL', trigger: 'blur' },
+          { min: 3, max: 500, message: '长度在 3 到 500 个字符', trigger: 'blur' }
         ]
       }
     }

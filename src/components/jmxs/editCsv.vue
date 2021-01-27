@@ -54,13 +54,16 @@ export default {
       // 校验必填参数，上传fileList校验添加后会报错，最好不添加
       modifyCsvFormRules: {
         name: [
-          { required: true, message: '请输入CSV名称', trigger: 'blur' }
+          { required: true, message: '请输入CSV名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         variableNames: [
-          { required: true, message: '请输入变量名称', trigger: 'blur' }
+          { required: true, message: '请输入变量名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         delimiter: [
-          { required: true, message: '请输入分割符号', trigger: 'blur' }
+          { required: true, message: '请输入分割符号', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
         ]
       }
     }

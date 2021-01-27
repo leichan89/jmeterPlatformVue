@@ -14,7 +14,7 @@
         </el-form-item>
         <!--    密码    -->
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-3702mima" placeholder="请输入密码"></el-input>
+          <el-input v-model="loginForm.password" @keypress.native.enter="login" type="password" prefix-icon="iconfont icon-3702mima" placeholder="请输入密码"></el-input>
         </el-form-item>
         <!--    按钮区域    -->
         <el-form-item class="btns">

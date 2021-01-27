@@ -7,13 +7,13 @@
           <el-input v-model="threadNumFormData.jmxAlias" placeholder="JMX名称" size="small"/>
         </el-form-item>
         <el-form-item label="线程组数" prop="numThreads">
-          <el-input v-model="threadNumFormData.numThreads" placeholder="线程组数" size="small"/>
+          <el-input v-model="threadNumFormData.numThreads" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" placeholder="线程组数" size="small"/>
         </el-form-item>
         <el-form-item label="RampUp" prop="rampTime">
-          <el-input v-model="threadNumFormData.rampTime" placeholder="Ramp-Up时间（单位s）" size="small"/>
+          <el-input v-model="threadNumFormData.rampTime" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" placeholder="Ramp-Up时间（单位s）" size="small"/>
         </el-form-item>
         <el-form-item label="循环次数" prop="loops">
-          <el-input v-model="threadNumFormData.loops" placeholder="循环次数，-1为永久循环" size="small"/>
+          <el-input v-model="threadNumFormData.loops" placeholder="循环次数为正整数或-1，-1为永久循环" maxLength="9" size="small"/>
         </el-form-item>
         <el-form-item label="调度器">
           <el-select v-model="threadNumFormData.scheduler" size="small" style="width:100%">
@@ -26,7 +26,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="持续时间" prop="duration">
-          <el-input v-model="threadNumFormData.duration" placeholder="持续时间（单位s）" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
+          <el-input v-model="threadNumFormData.duration" placeholder="持续时间（单位s）" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -40,6 +40,15 @@
 <script>
 export default {
   data() {
+    const validateLoops = (rule, value, callback) => {
+      if (value === '-1') {
+        callback()
+      } else if (/[^1-9]/g.test(value)) {
+        callback(new Error('只能输入数字'))
+      } else {
+        callback()
+      }
+    }
     return {
       eidtThreadNumVisible: false,
       threadNumOptions: [
@@ -73,7 +82,7 @@ export default {
           { required: true, message: '请输入rampTime时间', trigger: 'blur' }
         ],
         loops: [
-          { required: true, message: '请输入循环次数，-1为永久循环', trigger: 'blur' }
+          { required: true, validator: validateLoops, message: '循环次数为正整数或-1，-1为永久循环', trigger: 'change' }
         ]
       }
     }

@@ -47,7 +47,8 @@ export default {
       // 校验必填参数，上传fileList校验添加后会报错，最好不添加
       uploadFormRules: {
         jmxName: [
-          { required: true, message: '请输入jmx文件别名', trigger: 'blur' }
+          { required: true, message: '请输入jmx文件别名', trigger: 'blur' },
+          { min: 3, max: 500, message: '长度在 3 到 500 个字符', trigger: 'blur' }
         ]
       }
     }

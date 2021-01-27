@@ -13,7 +13,7 @@
       <!-- gutter设置栅格的间距 -->
       <el-row :gutter="40">
         <el-col :span="10">
-          <el-input placeholder="请输入内容" v-model="queryInfo.search" clearable @clear="getTaskFlowsList">
+          <el-input placeholder="请输入内容" maxLength="10" v-model="queryInfo.search" @keypress.native.enter="getTaskFlowsList" clearable @clear="getTaskFlowsList">
             <el-button slot="append" icon="el-icon-search" @click="getTaskFlowsList"></el-button>
           </el-input>
         </el-col>

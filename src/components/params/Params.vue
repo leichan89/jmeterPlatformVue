@@ -13,7 +13,7 @@
       <!-- gutter设置栅格的间距 -->
       <el-row :gutter="40">
         <el-col :span="10">
-          <el-input placeholder="请输入内容" v-model="queryInfo.search" clearable @clear="getParamsList">
+          <el-input placeholder="请输入内容" maxLength="10" @keypress.native.enter="getParamsList" v-model="queryInfo.search" clearable @clear="getParamsList">
             <el-button slot="append" icon="el-icon-search" @click="getParamsList"></el-button>
           </el-input>
         </el-col>
@@ -103,13 +103,16 @@ export default {
       // 校验必填参数
       createFormRules: {
         param_name: [
-          { required: true, message: '请输入参数名称', trigger: 'blur' }
+          { required: true, message: '请输入参数名称', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         param_value: [
-          { required: true, message: '请输入参数值', trigger: 'blur' }
+          { required: true, message: '请输入参数值', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ],
         param_content: [
-          { required: true, message: '请输入参数备注', trigger: 'blur' }
+          { required: true, message: '请输入参数备注', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
         ]
       }
     }
