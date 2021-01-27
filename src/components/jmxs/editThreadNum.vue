@@ -7,10 +7,10 @@
           <el-input v-model="threadNumFormData.jmxAlias" placeholder="JMX名称" size="small"/>
         </el-form-item>
         <el-form-item label="线程组数" prop="numThreads">
-          <el-input v-model="threadNumFormData.numThreads" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" placeholder="线程组数" size="small"/>
+          <el-input v-model="threadNumFormData.numThreads" maxLength="9" placeholder="线程组数" size="small"/>
         </el-form-item>
         <el-form-item label="RampUp" prop="rampTime">
-          <el-input v-model="threadNumFormData.rampTime" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" placeholder="Ramp-Up时间（单位s）" size="small"/>
+          <el-input v-model="threadNumFormData.rampTime" maxLength="9" placeholder="Ramp-Up时间（单位s）" size="small"/>
         </el-form-item>
         <el-form-item label="循环次数" prop="loops">
           <el-input v-model="threadNumFormData.loops" placeholder="循环次数为正整数或-1，-1为永久循环" maxLength="9" size="small"/>
@@ -26,7 +26,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="持续时间" prop="duration">
-          <el-input v-model="threadNumFormData.duration" placeholder="持续时间（单位s）" oninput="value=value.replace(/[^1-9]/g,'')" maxLength="9" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
+          <el-input v-model="threadNumFormData.duration" placeholder="持续时间（单位s）" maxLength="9" size="small" :disabled="threadNumFormData.scheduler==='false'"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -40,11 +40,26 @@
 <script>
 export default {
   data() {
+    const validateNumber = (rule, value, callback) => {
+      if (/^[0]/g.test(value)) {
+        callback(new Error('不能为0'))
+      } else if (value.length === 0) {
+        callback(new Error('长度不能为空'))
+      } else if (/[^0-9]/g.test(value)) {
+        callback(new Error('只能输入数字'))
+      } else {
+        callback()
+      }
+    }
     const validateLoops = (rule, value, callback) => {
       if (value === '-1') {
         callback()
-      } else if (/[^1-9]/g.test(value)) {
-        callback(new Error('只能输入数字'))
+      } else if (value.length === 0) {
+        callback(new Error('长度不能为空'))
+      } else if (value === '0') {
+        callback(new Error('不能为0'))
+      } else if (/[^0-9]/g.test(value)) {
+        callback(new Error('只能输入正整数或者-1'))
       } else {
         callback()
       }
@@ -72,17 +87,21 @@ export default {
       },
       // 校验必填参数
       editThreadNumFormRules: {
+        // 使用了validator后，就不要有message消息，不然就一直使用message消息
         jmxAlias: [
           { required: true, message: '请输入JMX名称', trigger: 'blur' }
         ],
         numThreads: [
-          { required: true, message: '请输入线程组数', trigger: 'blur' }
+          { required: true, validator: validateNumber, trigger: 'change' }
         ],
         rampTime: [
-          { required: true, message: '请输入rampTime时间', trigger: 'blur' }
+          { required: true, validator: validateNumber, trigger: 'change' }
         ],
         loops: [
-          { required: true, validator: validateLoops, message: '循环次数为正整数或-1，-1为永久循环', trigger: 'change' }
+          { required: true, validator: validateLoops, trigger: 'change' }
+        ],
+        duration: [
+          { required: true, validator: validateNumber, trigger: 'change' }
         ]
       }
     }
