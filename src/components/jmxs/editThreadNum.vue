@@ -64,6 +64,15 @@ export default {
         callback()
       }
     }
+    const validateDuration = (rule, value, callback) => {
+      if (/^[0]/g.test(value)) {
+        callback(new Error('不能为0'))
+      } else if (/[^0-9]/g.test(value)) {
+        callback(new Error('只能输入数字'))
+      } else {
+        callback()
+      }
+    }
     return {
       eidtThreadNumVisible: false,
       threadNumOptions: [
@@ -101,7 +110,7 @@ export default {
           { required: true, validator: validateLoops, trigger: 'change' }
         ],
         duration: [
-          { required: true, validator: validateNumber, trigger: 'change' }
+          { validator: validateDuration, trigger: 'change' }
         ]
       }
     }
