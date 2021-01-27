@@ -77,7 +77,7 @@
         </el-table>
         <!-- 底部区域，点击取消关闭 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="viewTaskDetailDialogVisible = false">取 消</el-button>
+        <el-button @click="viewTaskDetailDialogVisible = false" size="small">取 消</el-button>
       </span>
       </el-dialog>
 

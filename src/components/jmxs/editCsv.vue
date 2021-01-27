@@ -3,7 +3,7 @@
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm" size="small" class="myicon" icon="el-icon-edit" circle></el-button>
     <!-- 上传文件对话框 -->
-    <el-dialog title="修改CSV信息" :visible.sync="modifyCsvFormVisible" width="25%">
+    <el-dialog title="修改CSV信息" :visible.sync="modifyCsvFormVisible" width="35%">
       <el-form ref="modifyCsvFormRef" :model="modifyCsvForm" :rules="modifyCsvFormRules" label-width="80px" class="demo-ruleForm">
         <el-form-item label="CSV名称" prop="name">
           <el-input v-model="modifyCsvForm.name" size="small" placeholder="CSV名称" style="width:100%"/>

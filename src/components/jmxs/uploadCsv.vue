@@ -3,7 +3,7 @@
     <!-- button前面要用div包起来，不然会报错 -->
     <el-button type="primary" @click="initForm" size="small">添加CSV</el-button>
     <!-- 上传文件对话框 -->
-    <el-dialog title="上传CSV" :visible.sync="uploadFormVisible" width="25%">
+    <el-dialog title="上传CSV" :visible.sync="uploadFormVisible" width="35%">
       <el-form ref="uploadFormRef" :model="uploadForm" :rules="uploadFormRules" label-width="80px" class="demo-ruleForm">
         <el-form-item label="线程类型">
           <el-select v-model="uploadForm.threadType" size="small" style="width:100%">
